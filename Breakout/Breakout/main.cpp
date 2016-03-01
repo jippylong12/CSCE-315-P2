@@ -3,15 +3,18 @@
 
 #include <iostream>
 
+#include "Game.h"
+
+
 using namespace std;
 
 int main()
 {
 	while(1)
 	{
-		cout << "Marcus Is Awesome.\n";
+		cout << "Marcus Is Awesome.  \n";
 	}
-
+	
 	return 0;
 }
 
