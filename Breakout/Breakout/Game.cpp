@@ -1,0 +1,1 @@
+//define functions of the game class that we need. 
