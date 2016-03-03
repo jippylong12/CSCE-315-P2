@@ -4,16 +4,25 @@
 #include <iostream>
 
 #include "Game.h"
-
+#include "Server.h"
 
 using namespace std;
 
 int main()
 {
-	while(1)
-	{
-		cout << "Marcus Is Awesome.  \n";
-	}
+	
+    Server s;
+    s.createSocket();
+    //while(1)
+	//{
+    cout << "Marcus Is Awesome.  \n";
+        
+    
+    
+    //}
+	
+	
+	
 	
 	return 0;
 }

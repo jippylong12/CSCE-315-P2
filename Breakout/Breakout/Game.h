@@ -9,6 +9,7 @@ class Game
 {
 public:
 	Parser gameParser;
-	Board Board;
+	Board board;
 
 };
+
