@@ -23,7 +23,7 @@ void Server::createSocket(){
         cerr << "Bind Failed." << endl;
         exit(1);
     }
-    cout << "Bind done..." << endl;
+    cout << "Bind done...(go to telnet and connect)" << endl;
     c = sizeof(struct sockaddr_in);
     
 	listen(socketfd, 1);    //allow 1 client on the port

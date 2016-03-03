@@ -16,7 +16,7 @@ public:
 	Parser(string); //constructor
 	Parser() { input = ""; } //default
 
-							 //Parser functions
+	//Parser functions
 	void parse();
 	void sendNewInput(string);
 	string getInput() { return input; }

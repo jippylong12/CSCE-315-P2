@@ -9,7 +9,11 @@ using namespace std;
 
 int main()
 {
-	int portNo;
+	Game mainGame;
+    int portNo;
+    mainGame.gameParser.sendNewInput("Hello, World!;");
+    cout << "Marcus Is Awesome.  \n";
+    
     
     cout << "Enter the port number (e.g 8888): ";
     cin >> portNo;
@@ -26,6 +30,14 @@ int main()
 	
 	
 	
+
+	
+
+	//while(1)
+	//{
+		
+	//}
+
 	
 	return 0;
 }
