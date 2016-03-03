@@ -2,7 +2,6 @@
 //
 
 #include <iostream>
-
 #include "Game.h"
 #include "Server.h"
 
@@ -10,8 +9,12 @@ using namespace std;
 
 int main()
 {
-	
-    Server s;
+	int portNo;
+    
+    cout << "Enter the port number (e.g 8888): ";
+    cin >> portNo;
+    
+    Server s(portNo);
     s.createSocket();
     //while(1)
 	//{
