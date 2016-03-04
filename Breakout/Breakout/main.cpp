@@ -15,28 +15,40 @@ int main()
     cout << "Marcus Is Awesome.  \n";
     
     
-    cout << "Enter the port number (e.g 8888): ";
-    cin >> portNo;
-    
-    Server s(portNo);
-    s.createSocket();
-    //while(1)
-	//{
-    cout << "Marcus Is Awesome.  \n";
-        
-    
-    
-    //}
-	
-	
-	
+	/*CONNECTION FROM CLIENT TO SERVER*/
 
-	
+    //cout << "Enter the port number (e.g 8888): ";
+    //cin >> portNo;
+    
+    //Server s(portNo);
+    //s.createSocket();
 
-	//while(1)
-	//{
+	/*INITIAL SET UP OF GAME*/
+	//get access
+	string userInputPassword;
+	int accepted = 1; //0 is true anything else is false
+	cout << "PASSWORD\n";
+	cin >> userInputPassword;
+	accepted = userInputPassword.compare(mainGame.getPassword());
+
+	if (!accepted)
+	{
+		/*PLAY GAME USING SETTINGS*/
+		//get difficulty
+		string userInput; //universal input 
+		cout << "WELCOME\n";
 		
-	//}
+		while (1)
+		{
+			cin >> userInput;
+			mainGame.gameParser.sendNewInput(userInput);
+			
+		}
+	}
+	else
+	{
+		cout << "Wrong Password. \n";
+	}
 
 	
 	return 0;

@@ -10,6 +10,12 @@ Parser::Parser(string in)
 	parse();
 }
 
+void Parser::sendNewInput(string in)
+{
+	input = in; //give it input
+	parse(); //then tell it to do something
+}
+
 void Parser::parse()
 {
 	int stringCount = 0;
@@ -98,15 +104,83 @@ void Parser::parse()
 
 	tokens = temp;
 
-	if (tokens.size() < 3)
+	if (isStatement()) {}
+	else
 	{
 		cout << "Error: Command or Query not found!" << endl;
-		return;
 	}
 }
 
-void Parser::sendNewInput(string in)
+
+bool Parser::isStatement()
 {
-	input = in; //give it input
-	parse(); //then tell it to do something
+	if (isPassword()) return true;
+	else if (isCommand()) return true;
+	else if (isMove()) return true;
+	else if (isComment()) return true;
+	else return false;
+}
+
+bool Parser::isPassword()
+{
+	//here we get the password
+	contain.password = tokens.front();
+	//then remove it from the queue
+	tokens.pop();
+	//then we return true and go back up the tree
+	return true;
+}
+bool Parser::isCommand()
+{
+
+}
+
+bool Parser::isMove()
+{
+
+}
+
+bool Parser::isComment()
+{
+
+}
+
+bool Parser::isDifficulty()
+{
+
+}
+
+bool Parser::isServer()
+{
+
+}
+
+bool Parser::isPort()
+{
+
+}
+
+bool Parser::isMyDifficulty()
+{
+
+}
+
+bool Parser::isOppenentDifficulty()
+{
+
+}
+
+bool Parser::isColumn()
+{
+
+}
+
+bool Parser::isRow()
+{
+
+}
+
+bool Parser::isMoveDirection()
+{
+
 }

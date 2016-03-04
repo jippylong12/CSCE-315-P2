@@ -7,9 +7,17 @@ using namespace std;
 
 class Game
 {
+	string password = "a";
+	string difficulty;
 public:
 	Parser gameParser;
 	Board board;
+	bool DISPLAY; //determines if we should display the board after each term
+
+
+	
+	string getPassword() { return password; }
+	string setDifficulty(string);
 
 };
 

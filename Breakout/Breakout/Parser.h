@@ -16,12 +16,26 @@ public:
 	Parser(string); //constructor
 	Parser() { input = ""; } //default
 
-	//Parser functions
+	/*CLASS FUNCTIONS*/
 	void parse();
 	void sendNewInput(string);
 	string getInput() { return input; }
 
+	/*CONTAINER FOR PARSER*/
 	Container contain;
 
-
+	/*PARSER FUNCTIONS*/
+	bool isStatement();
+	bool isPassword();
+	bool isCommand();
+	bool isMove();
+	bool isComment();
+	bool isDifficulty();
+	bool isServer();
+	bool isPort();
+	bool isMyDifficulty();
+	bool isOppenentDifficulty();
+	bool isColumn();
+	bool isRow();
+	bool isMoveDirection();
 };
