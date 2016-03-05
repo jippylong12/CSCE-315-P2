@@ -14,7 +14,7 @@ void Board::moveBlack(coordinates orig, coordinates next)
 {
     if (Pieces[next.getRow()][next.getCol()] != NULL || Pieces[next.getRow()][next.getCol()].team != 0)
     {
-        removeWhitePiece(next)
+        removePiece(next)
         Pieces[orig.getRow()][orig.getCol()].currentPosition = next;
     }
     else
@@ -27,7 +27,7 @@ void Board::moveWhite(coordinates orig, coordinates next)
 {
    if (Pieces[next.getRow()][next.getCol()] != NULL || Pieces[next.getRow()][next.getCol()].team != 1)
     {
-        removeBlackPiece(next);
+        removePiece(next);
         Pieces[orig.getRow()][orig.getCol()].currentPosition = next;
     }
     else
