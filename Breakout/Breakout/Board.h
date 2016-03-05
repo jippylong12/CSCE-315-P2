@@ -7,7 +7,14 @@ using namespace std;
 
 class Board
 {
-	vector< vector<gamePiece> > Pieces;
+	public:
+	vector <vector <gamePiece> > Pieces;
+	vector<gamePiece> blackPieces;
+	vector<gamePiece> whitePieces;
 	//AI goes here
-	    
+	void moveBlack(coordinates a, gamePiece p);
+	void moveWhite(coordinates a, gamePiece p);
+	void removePiece(coordinates a, gamePiece p);
+	void saveState();
+	void undoMove();
 };
