@@ -3,7 +3,27 @@
 #include "Game.h"
 using namespace std;
 
-string Game::setDifficulty(string s)
+void Game::setDifficulty()
+{
+	difficulty = gameParser.contain.difficulty;
+}
+
+void Game::setGameMode()
+{
+	gameMode = gameParser.contain.gameMode;
+}
+
+bool Game::parse(string s)
+{
+	return gameParser.sendNewInput(s);
+}
+
+void Game::UNDO()
+{
+
+}
+
+void Game::displayBoard()
 {
 
 }

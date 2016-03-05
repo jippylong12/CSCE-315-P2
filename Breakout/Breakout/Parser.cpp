@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include <locale>>
 #include <string>
 
 using namespace std;
@@ -10,13 +11,13 @@ Parser::Parser(string in)
 	parse();
 }
 
-void Parser::sendNewInput(string in)
+bool Parser::sendNewInput(string in)
 {
 	input = in; //give it input
-	parse(); //then tell it to do something
+	return parse(); //then tell it to do something
 }
 
-void Parser::parse()
+bool Parser::parse()
 {
 	int stringCount = 0;
 	int splitStart = 0;
@@ -62,6 +63,8 @@ void Parser::parse()
 		}
 		++stringCount;
 	}
+	//needed to get the last part of the input
+	tokens.push(subString);
 
 	queue<string> temp;
 	int tokenSize = tokens.size();
@@ -92,7 +95,6 @@ void Parser::parse()
 		else if (tokens.front() != "")
 		{
 			temp.push(tokens.front());
-			cout << tokens.front() << endl;
 			tokens.pop();
 		}
 		else
@@ -104,25 +106,41 @@ void Parser::parse()
 
 	tokens = temp;
 
-	if (isStatement()) {}
+	if (isStatement()) { return true; }
 	else
 	{
-		cout << "Error: Command or Query not found!" << endl;
+		cout << "IILEGAL\n";
+		return false;
 	}
 }
 
+/*We need this because the inputs are supposed to be case insensitive. It's arbitrary that I choose upper case over lower case. */
+string UPPERCASE_STRING(string str)
+{
+	locale loc;
+	string returnString;
+	for (string::size_type i = 0; i<str.length(); ++i)
+		returnString.push_back(std::toupper(str[i], loc));
+
+	return returnString;
+}
 
 bool Parser::isStatement()
 {
-	if (isPassword()) return true;
-	else if (isCommand()) return true;
+	if (isCommand()) return true;
+	else if (tokens.size() < 1) return false;
 	else if (isMove()) return true;
+	else if (tokens.size() < 1) return false;
 	else if (isComment()) return true;
+	else if (tokens.size() < 1) return false;
+	else if (isPassword()) return true;
 	else return false;
 }
 
 bool Parser::isPassword()
 {
+	//if we already have a password we don't need another one
+	if (contain.password.size() > 0) return false;
 	//here we get the password
 	contain.password = tokens.front();
 	//then remove it from the queue
@@ -132,55 +150,188 @@ bool Parser::isPassword()
 }
 bool Parser::isCommand()
 {
-
+	if (UPPERCASE_STRING(tokens.front()).compare("DISPLAY") == 0)
+	{
+		contain.DISPLAY = !contain.DISPLAY; //flip the dispaly signal
+		cout << "Display set to: " << contain.DISPLAY << endl;
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()).compare("EXIT") == 0)
+	{
+		contain.EXIT = 1; //send signal to exit
+		cout << "Exiting... \n";
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()).compare("UNDO") == 0)
+	{
+		contain.UNDO = 1; //send signal to undo
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()).compare("HUMAN-AI") == 0)
+	{
+		contain.gameMode = UPPERCASE_STRING(tokens.front());
+		tokens.pop();
+		if (isDifficulty()) return true;
+		else return false;
+	}
+	else if (UPPERCASE_STRING(tokens.front()).compare("AI-AI") == 0)
+	{
+		contain.gameMode = UPPERCASE_STRING(tokens.front());
+		tokens.pop();
+		if (!isServer()) return false;
+		else if (tokens.size() < 1) return false;
+		else if (!isPort()) return false;
+		else if (tokens.size() < 1) return false;
+		else if (!isPassword()) return false;
+		else if (tokens.size() < 1) return false;
+		else if (!isMyDifficulty()) return false;
+		else if (tokens.size() < 1) return false;
+		else if (!isOppenentDifficulty()) return false;
+		else  return true;
+	}
+	else return false;
 }
 
 bool Parser::isMove()
 {
-
+	if (!isColumn()) return false;
+	else if (!isRow()) return false;
+	else if (!isMoveDirection()) return false;
+	else return true;
 }
 
 bool Parser::isComment()
 {
-
+	//if we there is a ; then that signifies that we have a comment
+	//I am not sure if there is always a space after the ; so I just check the
+	//first index
+	if (tokens.front()[0] == ';')
+	{
+		//print out the comment
+		return true;
+	}
+	else return false;
 }
 
 bool Parser::isDifficulty()
 {
-
+	if (UPPERCASE_STRING(tokens.front()) == "EASY")
+	{
+		contain.difficulty = "EASY";
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()) == "MEDIUM")
+	{
+		contain.difficulty = "MEDIUM";
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()) == "HARD")
+	{
+		contain.difficulty = "HARD";
+		tokens.pop();
+		return true;
+	}
+	else return false;
 }
 
 bool Parser::isServer()
 {
-
+	contain.server = tokens.front(); //grab server
+	tokens.pop(); //remove from queue
+	return true;
 }
 
 bool Parser::isPort()
 {
-
+	contain.port = tokens.front();
+	tokens.pop(); //remove from queue
+	return true;
 }
 
 bool Parser::isMyDifficulty()
 {
-
+	if (isDifficulty()) return true;
+	else return false;
 }
 
 bool Parser::isOppenentDifficulty()
 {
-
+	if (isDifficulty()) return true;
+	else return false;
 }
 
 bool Parser::isColumn()
 {
-
+	//The input should look something like A7 FWD
+	//So the temp will be A7
+	//and the first index is the column
+	string temp = UPPERCASE_STRING(tokens.front());
+	if ((temp[0] == 'A') || (temp[0] == 'B') ||
+		(temp[0] == 'C') || (temp[0] == 'D') ||
+		(temp[0] == 'E') || (temp[0] == 'F') ||
+		(temp[0] == 'G'))
+	{
+		//if we are then we have a valid column
+		contain.pieceColumn = temp[0]; //so we add it
+		//we will pop in isRow()
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+		
 }
 
 bool Parser::isRow()
 {
+	//The input should look something like A7 FWD
+	//So the temp will be A7
+	//and the second index is the row
+	string temp = UPPERCASE_STRING(tokens.front());
+	if(temp[1] == '1' || temp[1] == '2' ||
+		temp[1] == '3' || temp[1] == '4' || 
+		temp[1] == '5' || temp[1] == '6' || 
+		temp[1] == '7' || temp[1] == '8' )
+	{
+		contain.pieceRow = temp[1]; //get the row
+		tokens.pop(); //get rid of the A7 or whatever it is
+		return true;
 
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool Parser::isMoveDirection()
 {
-
+	if (UPPERCASE_STRING(tokens.front()) == "FWD")
+	{
+		contain.moveDirection = tokens.front();
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()) == "RIGHT")
+	{
+		contain.moveDirection = tokens.front();
+		tokens.pop();
+		return true;
+	}
+	else if (UPPERCASE_STRING(tokens.front()) == "LEFT")
+	{
+		contain.moveDirection = tokens.front();
+		tokens.pop();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

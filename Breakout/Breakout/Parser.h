@@ -17,8 +17,8 @@ public:
 	Parser() { input = ""; } //default
 
 	/*CLASS FUNCTIONS*/
-	void parse();
-	void sendNewInput(string);
+	bool parse();
+	bool sendNewInput(string);
 	string getInput() { return input; }
 
 	/*CONTAINER FOR PARSER*/
