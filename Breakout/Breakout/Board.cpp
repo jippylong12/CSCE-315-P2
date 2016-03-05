@@ -12,28 +12,33 @@ using namespace std;
 
 void Board::moveBlack(coordinates orig, coordinates next)
 {
-    for (int i = 0; i < blackPieces.size(); ++i)
+    if (Pieces[next.getRow()][next.getCol()] != NULL || Pieces[next.getRow()][next.getCol()].team != 0)
     {
-        if (blackPieces)
-        {
-            blackPieces[i].currentPosition = a;
-        }
+        removeWhitePiece(next)
+        Pieces[orig.getRow()][orig.getCol()].currentPosition = next;
+    }
+    else
+    {
+        cout<<"Error in moving black piece"<<endl;
     }
 }
 
-void Board::moveWhite(coordinates a, string s)
+void Board::moveWhite(coordinates orig, coordinates next)
 {
-   
+   if (Pieces[next.getRow()][next.getCol()] != NULL || Pieces[next.getRow()][next.getCol()].team != 1)
+    {
+        removeBlackPiece(next);
+        Pieces[orig.getRow()][orig.getCol()].currentPosition = next;
+    }
+    else
+    {
+        cout<<"Error in moving white piece"<<endl;
+    }
 }
 
-void Board::removeBlackPiece(coordinates a, string s)
+void Board::removePiece(coordinates a)
 {
-    
-}
-
-void Board::removeWhitePiece(coordinates a, string s)
-{
-   
+    Pieces[a.getRow()][a.getCol()].taken = 1;
 }
 
 void Board::saveState()
