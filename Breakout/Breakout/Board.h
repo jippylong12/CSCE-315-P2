@@ -5,16 +5,26 @@
 
 using namespace std;
 
+
+
 class Board
 {
 	public:
-	vector <vector <gamePiece> > Pieces;
-	vector<gamePiece> blackPieces;
-	vector<gamePiece> whitePieces;
+	gamePiece* b = new gamePiece(true); // black piece
+	gamePiece* w = new gamePiece(false); // white piece
+	vector <vector <gamePiece*> > board;
+		
+	
+	vector<gamePiece*> blackPieces;
+	vector<gamePiece*> whitePieces;
+	
+	
+	void initGamePieces();
+	void printBoard();
 	//AI goes here
-	void moveBlack(coordinates a, gamePiece p);
+	/*void moveBlack(coordinates a, gamePiece p);
 	void moveWhite(coordinates a, gamePiece p);
 	void removePiece(coordinates a, gamePiece p);
 	void saveState();
-	void undoMove();
+	void undoMove();*/
 };

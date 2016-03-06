@@ -1,5 +1,6 @@
 //This will hold the game class
 
+#include <iostream>
 
 #include "Parser.h"
 #include "Board.h"
