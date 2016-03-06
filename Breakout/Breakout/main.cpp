@@ -14,20 +14,38 @@ int main()
     
 	/*CONNECTION FROM CLIENT TO SERVER*/
 
-    //cout << "Enter the port number (e.g 8888): ";
-    //cin >> portNo;
+    cout << "Enter the port number (e.g 8888): ";
+    cin >> portNo;
     
-    //Server s(portNo);
-    //s.createSocket();
-
+    Server s(portNo);
+	//s.sendMessage("dsjf");
+    s.createSocket();
+	/* while(1){
+		string sendToClient;
+		cout << "Enter a message to send to the client: ";
+		cin >> sendToClient;
+		s.sendMessage(sendToClient);
+		cout << endl;
+		s.getMessage();	//recieve a message from the client..
+	} */
+	
+	
+	
 	/*INITIAL SET UP OF GAME*/
 	//get access
+	
+	
+	
 	string userInputPassword;
 	int accepted = 1; //0 is true anything else is false
-	cout << "PASSWORD\n";
-	getline(cin,userInputPassword);
-	accepted = mainGame.parse(userInputPassword);
-
+		
+	
+		s.sendMessage("PASSWORD\n");	//Server requests a password
+	
+		cin.ignore();
+		//getline(cin,userInputPassword);
+		userInputPassword = s.getMessage();//Get the password
+		accepted = mainGame.parse(userInputPassword);
 	if (accepted)
 	{
 		/*PLAY GAME USING SETTINGS*/
