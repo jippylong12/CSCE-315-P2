@@ -84,7 +84,8 @@ int main()
 
 		cout << "OK\n";
 		//Start game
-		mainGame.board.initPieces
+		mainGame.board.initGamePieces();
+		mainGame.board.printBoard();
 		while (1)
 		{
 			correctInput = 0;
