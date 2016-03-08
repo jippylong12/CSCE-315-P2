@@ -11,7 +11,7 @@ void Board::initGamePieces()
     for(int i = 0; i < 16; i++)
     {
         blackPieces.push_back(new gamePiece(true));
-        whitePieces.push_back(w);
+        whitePieces.push_back(new gamePiece(false));
     }
     
     for(int i = 0; i < 8; i++)

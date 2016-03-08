@@ -10,9 +10,6 @@ using namespace std;
 class Board
 {
 	public:
-
-	gamePiece* b = new gamePiece(true); // black piece
-	gamePiece* w = new gamePiece(false); // white piece
 	vector <vector <gamePiece*> > board;
 		
 	
