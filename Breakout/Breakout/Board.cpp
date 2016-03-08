@@ -54,20 +54,19 @@ void Board::initGamePieces()
 
 void Board::printBoard()
 {
+    cout << "    A B C D E F G H" << endl;
     
     for(int i = 0; i < board.size(); i++)
     {
-        
-        
-        cout << "| ";
+        cout << 8-i << "  |";
         for(int j = 0; j < board[i].size(); j++)
         {
 			if(board[i][j] == NULL)
-				cout << " " << " | ";
+				cout << "_" << "|";
             else if(board[i][j]->team)
-                cout << "X" << " | ";
+                cout << "X" << "|";
 			else if (!board[i][j]->team)
-				cout << "O" << " | ";
+				cout << "O" << "|";
 			else
 				cout << "error" << endl;
         }
