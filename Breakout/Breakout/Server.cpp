@@ -5,6 +5,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <cstdlib>
+#include <algorithm>
 /*
 Server code should be fully functional: user can connect to the open port and play a random game. 
 It should implement the full protocol (you may leave out actual AI-related function: 
@@ -34,11 +35,11 @@ void Server::createSocket(){
 	server.sin_port = htons(port);      //Give it the port number
 	cout << "address: " << INADDR_ANY << endl;
 	
-	if( bind(socketfd, (struct sockaddr *)&server, sizeof(server)) < 0 ){ //socketfd - to be bound (client)
+	if(::bind(socketfd, (struct sockaddr *)&server, sizeof(server)) < 0 ){ //socketfd - to be bound (client)
         cerr << "Bind Failed." << endl;
         exit(1);
     }
-    cout << "Bind done...(go to telnet and  connect)" << endl;
+    cout << "Bind succesful... go to telnet and connect on port " << port << endl;
     c = sizeof(struct sockaddr_in);
     
 	listen(socketfd, 1);    //allow 1 client on the port
@@ -80,18 +81,25 @@ string Server::getMessage(){
 	//recv something
 	//recv (int socketID, char* bufferPTR, int len, int flags)
 	//socketfd shall be the clients sucket
-	string message;
+	string message = "";
 	recv(clientSocket, buffer, SOCKET_BUF_SIZE, 0);
 	message = string(buffer);
-	
+    //char removeChars[] = {'\v', '\r', '\n', '\t'};
+    char removeChars[] = "\v\r\n\t";
+
+    for (int i = 0; i < 4; ++i) //Clean formatting of the input
+        message.erase(std::remove(message.begin(), message.end(), removeChars[i]), message.end());
+    
+    memset(buffer, 0, SOCKET_BUF_SIZE);   //need this to clear the input buffer
 	cout << "Client said: " << message << endl;
 	return message;
+    
 }
 
 void Server::sendMessage(string str){
 	//send something
 	send(clientSocket, str.c_str(), str.size(), 0);
-	cout << "From server: " << str << endl;
+	cout << str << endl;
 	
 }
 

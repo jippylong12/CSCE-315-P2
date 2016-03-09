@@ -10,6 +10,9 @@ class coordinates
     int col;
     
     public:
+    
+    coordinates(int r, int c) : row(r), col(c) {} //arg constructor
+    
     int getRow()
     {
         return row;
@@ -18,4 +21,5 @@ class coordinates
     {
         return col;
     }
-}
+    void setPos(int r, int c){ row = r; col = c;}
+};

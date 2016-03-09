@@ -24,7 +24,8 @@ Server.o: Server.h Server.cpp
 	g++ -c -std=c++11 Server.h Server.cpp
 
 main.o: main.cpp
-    g++ -c -std=c++11 main.cpp
+    
+	g++ -c -std=c++11 main.cpp
 
 clean:
 	rm *.o
