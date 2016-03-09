@@ -84,11 +84,15 @@ string Server::getMessage(){
 	string message = "";
 	recv(clientSocket, buffer, SOCKET_BUF_SIZE, 0);
 	message = string(buffer);
+
     //char removeChars[] = {'\v', '\r', '\n', '\t'};
     char removeChars[] = "\v\r\n\t";
 
     for (int i = 0; i < 4; ++i) //Clean formatting of the input
         message.erase(std::remove(message.begin(), message.end(), removeChars[i]), message.end());
+
+
+
     
     memset(buffer, 0, SOCKET_BUF_SIZE);   //need this to clear the input buffer
 	cout << "Client said: " << message << endl;

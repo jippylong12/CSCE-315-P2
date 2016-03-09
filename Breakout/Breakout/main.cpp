@@ -6,7 +6,9 @@
 #include "Server.h"
 #include <stdlib.h>
 #include "Game.h"
+
 #include <string.h>
+
 using namespace std;
 
 
@@ -51,7 +53,11 @@ int main()
 		while (!correctInput)
 		{
 			system("clear");
+
 			cout << "WELCOME\n";
+
+			//cout << "WELCOME\n";
+
 			//s.sendMessage("WELCOME\n"); //server sends this to client
             //need game mode and difficulty
 			getline(cin, userInput);
@@ -76,7 +82,11 @@ int main()
 			else
 			{
 				cout << "No input given\n";
-                //s.sendMessage("No input given.\n");
+
+               //s.sendMessage("No input given.\n");
+
+               // s.sendMessage("No input given.\n");
+
 			}
 		}
 
@@ -86,10 +96,15 @@ int main()
 		mainGame.board.initGamePieces();
 		mainGame.displayBoard();
 
-        while (1)
-        {
+
+
+
+		while (1)
+		{
+
 			correctInput = 0;
             bool turn = 0;
+            cout << "Your turn\n";
             //s.sendMessage("Your turn\n");
 			getline(cin, userInput);
 			//userInput = s.getMessage();
@@ -98,10 +113,18 @@ int main()
 			{
 				cout << "OK\n";
 				//s.sendMessage("OK\n");
+
             while(turn == 0 && !mainGame.board.checkIfWin()){
                 
+    
+
                 if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
                                                         //without putting it here
+                    
+                    bool turn = 0;
+                    
+                    
+
                     int row = stoi(mainGame.gameParser.contain.pieceRow); //convert row string to an int
                     string colString = mainGame.gameParser.contain.pieceColumn;
                     int col;                          //Will be the col number corresponding to A, B, C, etc
@@ -119,6 +142,9 @@ int main()
                 
                     cout << "row: " << row << " col: " << col << endl;
                     coordinates c(row,col); //piece at postion c to be moved
+
+                    //cout << moveDir << endl;
+
                     if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
                     else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
                     else mainGame.board.moveRIGHT(c);
@@ -137,12 +163,16 @@ int main()
 					mainGame.displayBoard();
                     //mainGame.board.printBoard();
                 }
+
 			
                 turn = 1;
 				if(mainGame.board.checkIfWin()) exit(2);
             
-        }
-           while(turn == 1 && !mainGame.board.checkIfWin()){
+        
+          
+
+         }
+          while(turn == 1 && !mainGame.board.checkIfWin()){
                //s.sendMessage("Ai's turn\n");
 			   cout << "AI's turn" << endl;
                mainGame.board.randAI(); //run a random AI
@@ -150,17 +180,24 @@ int main()
 			   cout << "AI's turn: done" << endl;
                turn = 0;
            }
-         }
         }
-	}
-	else
+        }
+        }
+    else
 	{
 		system("clear");
 		cout << "Wrong Password. \n";
 		main();
 	}
+        return 0;
+    
+    
+    }
+    
 
 	
-	return 0;
-}
+
+
+
+
 
