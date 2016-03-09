@@ -261,7 +261,7 @@ void Board::randAI(){
         randRow = rand() % 8; //0..7
         randCol = rand() % 8; //0..7
         coordinates randCoord(randRow, randCol);
-        cout << "AI move pos: " <<  randRow << ", "  << randCol << endl;
+        //cout << "AI move pos: " <<  randRow << ", "  << randCol << endl;
             if(board[randRow][randCol] != NULL && board[randRow][randCol]->team){    //move if the piece is black
                 int randomMove = rand() % 3;    //take a random move
                     if (randomMove==0){
@@ -271,13 +271,13 @@ void Board::randAI(){
                     }else{
                         moveRIGHT(randCoord);
                     }
-                cout << "moveDone: " << moveDone << " isLegalMove: " << isLegalMove << endl;
+                //cout << "moveDone: " << moveDone << " isLegalMove: " << isLegalMove << endl;
             }else if (board[randRow][randCol] == NULL){
 					moveDone = 0; 
 					isLegalMove = 0; 
 					continue;        //move wasn't done successfully, try again
 			}
-			else { cerr << "fuck" << endl;}
+			else { /*cerr << "fuck" << endl;*/}
        }
 
 

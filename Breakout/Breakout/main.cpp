@@ -109,7 +109,7 @@ int main()
 				cout << "OK\n";
 				//s.sendMessage("OK\n");
 
-				while(turn == 0 && !mainGame.board.checkIfWin())
+				if(turn == 0 && !mainGame.board.checkIfWin())
 				{
                 
     
@@ -135,6 +135,8 @@ int main()
 						if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
 						else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
 						else mainGame.board.moveRIGHT(c);
+
+						turn = 1;
                 
                 
 					}
@@ -150,20 +152,48 @@ int main()
 						mainGame.displayBoard();
 					}
 			
-					turn = 1;
-					if(mainGame.board.checkIfWin()) exit(2);
-				}
+					
+					if (mainGame.board.checkIfWin())
+					{
+						cout << "Play again? (Y/N)\n";
+						getline(cin, userInput);
+						if (userInput == "Y")
+						{
+							system("clear");
+							main();
+						}
+						else
+						{
+							exit(2);
+						}
+					}
 
-				/*AI TURN*/
-				while(turn == 1 && !mainGame.board.checkIfWin())
-				{
-					//s.sendMessage("Ai's turn\n");
-					cout << "AI's turn" << endl;
-					mainGame.board.randAI(); //run a random AI
-					//s.sendMessage("AI's turn: done\n");
-					cout << "AI's turn: done" << endl;
-					mainGame.displayBoard();
-					turn = 0;
+					/*AI TURN*/
+					if (turn == 1 && !mainGame.board.checkIfWin())
+					{
+						//s.sendMessage("Ai's turn\n");
+						cout << "AI's turn" << endl;
+						mainGame.board.randAI(); //run a random AI
+												 //s.sendMessage("AI's turn: done\n");
+						cout << "AI's turn: done" << endl;
+						mainGame.displayBoard();
+						turn = 0;
+
+						if (mainGame.board.checkIfWin())
+						{
+							cout << "Play again? (Y/N)\n";
+							getline(cin, userInput);
+							if (userInput == "Y")
+							{
+								system("clear");
+								main();
+							}
+							else
+							{
+								exit(2);
+							}
+						}
+					}
 				}
 			}			
 		}
