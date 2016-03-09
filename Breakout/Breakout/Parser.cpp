@@ -1,5 +1,5 @@
 #include "Parser.h"
-#include <locale>>
+#include <locale>
 #include <string>
 
 using namespace std;
@@ -109,7 +109,8 @@ bool Parser::parse()
 	if (isStatement()) { return true; }
 	else
 	{
-		cout << "IILEGAL\n";
+		cout << "ILLEGAL\n";
+        input = "";
 		return false;
 	}
 }
@@ -162,6 +163,7 @@ bool Parser::isCommand()
 		contain.EXIT = 1; //send signal to exit
 		cout << "Exiting... \n";
 		tokens.pop();
+        exit(1);
 		return true;
 	}
 	else if (UPPERCASE_STRING(tokens.front()).compare("UNDO") == 0)
@@ -200,7 +202,11 @@ bool Parser::isMove()
 	if (!isColumn()) return false;
 	else if (!isRow()) return false;
 	else if (!isMoveDirection()) return false;
-	else return true;
+	else    //we have a movement
+    {
+        contain.MOVE = 1;   //set container for move to true
+        return true;
+    }
 }
 
 bool Parser::isComment()
@@ -274,7 +280,7 @@ bool Parser::isColumn()
 	if ((temp[0] == 'A') || (temp[0] == 'B') ||
 		(temp[0] == 'C') || (temp[0] == 'D') ||
 		(temp[0] == 'E') || (temp[0] == 'F') ||
-		(temp[0] == 'G'))
+		(temp[0] == 'G') || (temp[0] == 'H'))
 	{
 		//if we are then we have a valid column
 		contain.pieceColumn = temp[0]; //so we add it
@@ -314,19 +320,19 @@ bool Parser::isMoveDirection()
 {
 	if (UPPERCASE_STRING(tokens.front()) == "FWD")
 	{
-		contain.moveDirection = tokens.front();
+		contain.moveDirection = UPPERCASE_STRING(tokens.front());
 		tokens.pop();
 		return true;
 	}
 	else if (UPPERCASE_STRING(tokens.front()) == "RIGHT")
 	{
-		contain.moveDirection = tokens.front();
+		contain.moveDirection = UPPERCASE_STRING(tokens.front());
 		tokens.pop();
 		return true;
 	}
 	else if (UPPERCASE_STRING(tokens.front()) == "LEFT")
 	{
-		contain.moveDirection = tokens.front();
+		contain.moveDirection = UPPERCASE_STRING(tokens.front());
 		tokens.pop();
 		return true;
 	}

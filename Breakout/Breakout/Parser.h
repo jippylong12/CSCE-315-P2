@@ -3,7 +3,9 @@
 #include <vector>
 #include <queue>
 #include <sstream>
+//#include "Coordinates.h"
 #include "Container.h"
+//#include "Game.h"
 using namespace std;
 
 class Parser
@@ -11,6 +13,8 @@ class Parser
 	string input;
 	queue<string> tokens;
 	bool parsedCorrect = false;
+    
+
 
 public:
 	Parser(string); //constructor
@@ -38,4 +42,7 @@ public:
 	bool isColumn();
 	bool isRow();
 	bool isMoveDirection();
+    
+    
+
 };

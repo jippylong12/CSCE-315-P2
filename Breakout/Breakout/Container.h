@@ -13,7 +13,11 @@ public:
 	bool EXIT = 0; //check after each user input to see if on or off and exit if 1
 	bool UNDO = 0; //when this is called we undo 
 
-	//this will hold the last ten user commands (so the last 20 commands with user and AI)
+	bool MOVE = 0; //know when to move
+    
+    bool WIN = 0; //Maybe we need this?
+    
+    //this will hold the last ten user commands (so the last 20 commands with user and AI)
 	//Once it gets to 20 it will add the newest commands and pop the back two off. The back two because the human will not be able 
 	//to call undo until it's their turn again so we have to think of the moves as pairs. 
 	deque<string> lastTenCommands; 
@@ -22,7 +26,7 @@ public:
 	string moveDirection = ""; //FWD RIGHT LEFT
 	string password = ""; //find password
 	string pieceRow = ""; //1,2,3, etc..
-	string pieceColumn = ""; //a,b,c etc.
+	string pieceColumn = ""; //A,B,C etc.
 	string difficulty = ""; //EASY, MEDIUM, HARD
 	string comment = ""; //following ;*
 	string server = ""; //server IP addres

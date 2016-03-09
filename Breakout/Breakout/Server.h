@@ -4,9 +4,8 @@
 #include <netinet/in.h>
 #include <string>
 #include <stdio.h>
-
-
 using namespace std;
+
 class Server
 {
 	int port;	  //Port Number

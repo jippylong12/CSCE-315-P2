@@ -1,5 +1,5 @@
 #include <string>
-
+#include "Coordinates.h"
 using namespace std;
 
 class gamePiece
@@ -14,4 +14,8 @@ public:
 	
 	gamePiece(bool t){team = t;}
 	void setPosition(int x, int y){row = x; column= y;}
+    
+
+    
+    
 };
