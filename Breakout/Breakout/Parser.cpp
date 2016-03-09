@@ -201,6 +201,7 @@ bool Parser::isMove()
 {
 	if (!isColumn()) return false;
 	else if (!isRow()) return false;
+	else if (tokens.size() < 1) return false;
 	else if (!isMoveDirection()) return false;
 	else    //we have a movement
     {

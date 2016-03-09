@@ -22,6 +22,7 @@ public:
 	string getPassword() { return password; }
 	string getDifficulty() { return difficulty; }
 	string getGameMode() { return gameMode; }
+	int convertCol(string);
 
 	void setDifficulty();
 	void setGameMode();

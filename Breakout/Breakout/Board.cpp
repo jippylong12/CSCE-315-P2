@@ -77,7 +77,7 @@ void Board::printBoard()
 //----------------------------Move Functions--------------------------//
 //black = 1 (true) and white = 0 (false)
 
-coordinates Board::moveFWD(coordinates curPos) //ex:  E7 FWD
+int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
 {
     int row = curPos.getRow();
     int col = curPos.getCol();
@@ -90,10 +90,9 @@ coordinates Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             if (board[row+1][col] != NULL && board[row+1][col]->team == 1) { cout << "Can't move: Teammate piece in the way. " << endl; }
             else if (board[row+1][col] != NULL && board[row+1][col]->team == 0) { cout << "Can't move FWD, enemy piece in the way. " << endl; }
             else{
-                board[row+1][col] = new gamePiece(true);    //New piece foward
-                board[row][col] = NULL;                     //Previous position empty
+                board[row+1][col] = board[row][col];    //set new pointer to old pointer
+                board[row][col] = NULL;                     //set old pointer to null
                 checkIfWin();
-                printBoard();
             }
         }
         else{                       //white
@@ -101,18 +100,17 @@ coordinates Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             if (board[row-1][col] != NULL && board[row-1][col]->team == 0) { cout << "Can't move: Teammate piece in the way. " << endl; }
             else if (board[row-1][col] != NULL && board[row-1][col]->team == 1) { cout << "Can't move FWD, enemy piece in the way. " << endl; }
             else{
-                board[row-1][col] = new gamePiece(false);    //New piece foward
-                board[row][col] = NULL;                      //Previous position empty
+                board[row-1][col] = board[row][col];    //set new pointer to old pointer
+                board[row][col] = NULL;                      //set old pointer to null
                 checkIfWin();
-                printBoard();
             }
         }
     }
 
-    //return newPos;
+	return 0;
 }
 
-coordinates Board::moveLEFT(coordinates curPos)
+int Board::moveLEFT(coordinates curPos)
 {
     int row = curPos.getRow();
     int col = curPos.getCol();
@@ -125,10 +123,9 @@ coordinates Board::moveLEFT(coordinates curPos)
             if (board[row+1][col+1] != NULL && board[row+1][col+1]->team == 1) { cout << "Can't move: Teammate piece in the way. " << endl; }
             else if (col == 7) { cout << "Illegal move: moving black left outta bounds" << endl; }
             else{
-                board[row+1][col+1] = new gamePiece(true);    //New piece relative left
+                board[row+1][col+1] = board[row][col];    //New piece relative left
                 board[row][col] = NULL;                     //Previous position empty
                 checkIfWin();
-                printBoard();
             }
         }
         else{                       //white
@@ -137,16 +134,16 @@ coordinates Board::moveLEFT(coordinates curPos)
             if (board[row-1][col-1] != NULL && board[row-1][col-1]->team == 0) { cout << "Can't move: Teammate piece in the way. " << endl; }
             else if (col == 0) { cout << "Illegal move: moving white left outta bounds" << endl; }
             else{
-                board[row-1][col-1] = new gamePiece(false);    //New piece left
+                board[row-1][col-1] = board[row][col];    //New piece left
                 board[row][col] = NULL;                      //Previous position empty
                 checkIfWin();
-                printBoard();
             }
         }
     }
+	return 0;
 }
 
-coordinates Board::moveRIGHT(coordinates curPos)
+int Board::moveRIGHT(coordinates curPos)
 {
     int row = curPos.getRow();
     int col = curPos.getCol();
@@ -157,10 +154,9 @@ coordinates Board::moveRIGHT(coordinates curPos)
             if (board[row+1][col-1] != NULL && board[row+1][col-1]->team == 1) { cout << "Can't move: Teammate piece in the way. " << endl; }
             else if (col == 0) { cout << "Illegal move: moving black right outta bounds" << endl; }
             else{
-                board[row+1][col-1] = new gamePiece(true);    //New piece right
+                board[row+1][col-1] = board[row][col];    //New piece right
                 board[row][col] = NULL;                     //Previous position empty
                 checkIfWin();
-                printBoard();
             }
         }
         else{                       //white
@@ -168,14 +164,14 @@ coordinates Board::moveRIGHT(coordinates curPos)
             if (board[row-1][col+1] != NULL && board[row-1][col+1]->team == 0) { cout << "Can't move: Teammate piece in the way. " << endl; }
             else if (col == 7) { cout << "Illegal move: moving white right outta bounds" << endl; }
             else{
-                board[row-1][col+1] = new gamePiece(false);    //New piece right
+                board[row-1][col+1] = board[row][col];    //New piece right
                 board[row][col] = NULL;                      //Previous position empty
                 checkIfWin();
-                printBoard();
             }
         }
     }
 
+	return 0;
 }
 
 
@@ -188,7 +184,7 @@ bool Board::checkIfWin()
         else if (board[7][i]->team == 1) { cout << "Black won" << endl; return true;} //if a black piece is in white home (row 7)
         else continue;
     }
-
+	return false;
 }
 
 

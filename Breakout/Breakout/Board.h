@@ -22,12 +22,9 @@ class Board
 	void initGamePieces();
 	void printBoard();
 	//AI goes here
-	//void moveBlack(coordinates a, gamePiece p);
-	//void moveWhite(coordinates a, gamePiece p);
-	//void removePiece(coordinates a, gamePiece p);
-    coordinates moveFWD(coordinates);
-    coordinates moveLEFT(coordinates);
-    coordinates moveRIGHT(coordinates);
+    int moveFWD(coordinates);
+    int moveLEFT(coordinates);
+    int moveRIGHT(coordinates);
 	
     bool checkIfWin();
     

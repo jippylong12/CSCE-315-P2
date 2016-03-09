@@ -50,7 +50,7 @@ int main()
 		while (!correctInput)
 		{
 			system("clear");
-			//cout << "WELCOME\n";
+			cout << "WELCOME\n";
 			//s.sendMessage("WELCOME\n"); //server sends this to client
             //need game mode and difficulty
 			getline(cin, userInput);
@@ -61,16 +61,18 @@ int main()
 				correctInput = mainGame.parse(userInput);
 				//set those things
 				mainGame.setDifficulty();
+				//if we don't have naything for the difficulty it's not correct input
 				if (mainGame.getDifficulty().size() < 1)
 				{
 					correctInput = 0;
 				}
 				mainGame.setGameMode();
+				//if we don't have naything for the gameMode it's not correct input
 				if (mainGame.getGameMode().size() < 1)
 				{
 					correctInput = 0;
 				}
-                userInput = "";
+                userInput = ""; //reset
             }
 			else
 			{
@@ -83,33 +85,7 @@ int main()
         //s.sendMessage("OK\n");  // server sends this to client
 		//Start game
 		mainGame.board.initGamePieces();
-		mainGame.displayBoard();
-//        
-//        coordinates c;  //pass in the location of the piece you wanna move (row, col)
-//        coordinates c2;
-//        coordinates c3;
-//        coordinates c4;
-//        coordinates c5;
-//        coordinates c6;
-//        coordinates c7;
-//        
-//        c.setPos(1,2);
-//        c2.setPos(6,0);
-//        c3.setPos(2,2);
-//        c4.setPos(3,2);
-//        c5.setPos(6,2);
-//        c6.setPos(4,3);
-//        c7.setPos(1,7);
-//        
-//        mainGame.board.moveFWD(c);
-//		mainGame.board.moveFWD(c2);
-//        mainGame.board.moveFWD(c3);
-//        
-//        mainGame.board.moveLEFT(c4);
-//        mainGame.board.moveLEFT(c5);
-//        
-//        mainGame.board.moveRIGHT(c6);
-//        mainGame.board.moveRIGHT(c7);
+		bool turn = 1; //white piece goes first
 
 		while (1)
 		{
@@ -124,27 +100,20 @@ int main()
                 if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
                                                         //without putting it here
                     
-                    bool turn = 0;
-                    
-                    
                     int row = stoi(mainGame.gameParser.contain.pieceRow); //convert row string to an int
                     string colString = mainGame.gameParser.contain.pieceColumn;
-                    int col;                          //Will be the col number corresponding to A, B, C, etc
                     string moveDir = mainGame.gameParser.contain.moveDirection; //Grab move direction
                     
                     cout << "piece col " << mainGame.gameParser.contain.pieceColumn << endl;
-                    if      (colString.compare("A") == 0) col = 0;
-                    else if (colString.compare("B") == 0) col = 1;
-                    else if (colString.compare("C") == 0) col = 2;
-                    else if (colString.compare("D") == 0) col = 3;
-                    else if (colString.compare("E") == 0) col = 4;
-                    else if (colString.compare("F") == 0) col = 5;
-                    else if (colString.compare("G") == 0) col = 6;
-                    else if (colString.compare("H") == 0) col = 7;
+					
+					//convert the Column from a to a number in the vector
+					int col;                          //Will be the col number corresponding to A, B, C, etc
+					col = mainGame.convertCol(colString);
+
                 
                     cout << "row: " << row << " col: " << col << endl;
                     coordinates c(row,col); //piece at postion c to be moved
-                    //cout << moveDir << endl;
+
                     if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
                     else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
                     else mainGame.board.moveRIGHT(c);
@@ -161,11 +130,13 @@ int main()
 				if (mainGame.gameParser.contain.DISPLAY)
 				{
 					mainGame.displayBoard();
-                    //mainGame.board.printBoard();
                 }
+				turn = !turn; //change turn
 			}			
 		}
 	}
+
+	//We enter the wrong password so go back to the main screen
 	else
 	{
 		system("clear");
