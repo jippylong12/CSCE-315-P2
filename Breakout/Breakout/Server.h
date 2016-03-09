@@ -1,3 +1,4 @@
+/*
 //This will be the Server
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -36,3 +37,4 @@ public:
 	void sendMessage(string s);	//send a message to the client
 	
 };
+*/

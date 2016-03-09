@@ -1,3 +1,4 @@
+/*
 #include "Server.h"
 #include <iostream>
 #include <stdio.h>
@@ -9,7 +10,7 @@
 Server code should be fully functional: user can connect to the open port and play a random game. 
 It should implement the full protocol (you may leave out actual AI-related function: 
 game difficulty, ai-ai).
-*/
+
 //http://www.binarytides.com/server-client-example-c-sockets-linux/
 
 Server::~Server(){
@@ -68,7 +69,7 @@ void Server::createSocket(){
 			close(connectFd);
 		}
 	
-	*/
+	
 	
 	
 	
@@ -85,7 +86,7 @@ string Server::getMessage(){
 	message = string(buffer);
     char removeChars[] = {'\v', '\r', '\n', '\t'};
     for (int i = 0; i < 4; ++i) //Clean formatting of the input
-        message.erase(remove(message.begin(), message.end(), removeChars[i]), message.end());
+        message.erase(remove(message.begin(), message.end(), removeChars[i], message.end());
     
     memset(buffer, 0, SOCKET_BUF_SIZE);   //need this to clear the input buffer
 	cout << "Client said: " << message << endl;
@@ -100,3 +101,4 @@ void Server::sendMessage(string str){
 	
 }
 
+*/

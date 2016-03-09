@@ -121,7 +121,7 @@ int main()
 						string colString = mainGame.gameParser.contain.pieceColumn;
 						string moveDir = mainGame.gameParser.contain.moveDirection; //Grab move direction
                     
-						cout << "piece col " << mainGame.gameParser.contain.pieceColumn << endl;
+						//cout << "piece col " << mainGame.gameParser.contain.pieceColumn << endl;
 					
 						//convert the Column from a to a number in the vector
 						int col;                          //Will be the col number corresponding to A, B, C, etc
@@ -158,7 +158,7 @@ int main()
 						//s.sendMessage("Undoing...\n");  //server sends this to client
 						mainGame.board.undo();
 						mainGame.board.undo();
-						//mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
+						mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
 					}
 					if (mainGame.gameParser.contain.DISPLAY)
 					{
@@ -196,7 +196,7 @@ int main()
 						{
 							cout << "Play again? (Y/N)\n";
 							getline(cin, userInput);
-							if (userInput == "Y")
+							if (userInput == "Y" || "y")
 							{
 								system("clear");
 								main();

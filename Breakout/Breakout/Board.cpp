@@ -329,21 +329,24 @@ void Board::randAI(){
 }
 
 bool Board::isEnemy(coordinates curPos){
+    
     int row = curPos.getRow();
     int col = curPos.getCol();
-    if(board[row][col]->team){
+    if(board[row][col] != NULL && board[row][col]->team){
        return true;
-    }else return false;
-
+    }
+    else return false;
+}
 void Board::saveState()
 {
-	if (savedBoard.size() < 10)
+	if (savedBoard.size() < 20)
 	{
 		cout<<"pushed back the current states"<<endl<<endl;
 		savedBoard.push_back(board);
 	}
 	else
 	{
+		savedBoard.erase(savedBoard.begin());
 		savedBoard.erase(savedBoard.begin());
 		savedBoard.push_back(board);
 	}
@@ -356,22 +359,7 @@ void Board::undo()
 	board = savedBoard.back();
 	savedBoard.pop_back();
 	
-	/*
-	for (int i = 0; i < blackPieces.size(); ++i)
-	{
-		board[blackPieces[i]->row][blackPieces[i]->column] = blackPieces[i];
-		cout<<"blakcPiece's row: "<<blackPieces[i]->row;
-		cout<<"blakcPiece's column: "<<blackPieces[i]->column;
-	}
-	for (int i = 0; i < whitePieces.size(); ++i)
-	{
-		board[whitePieces[i]->row][whitePieces[i]->column] = whitePieces[i];
-	}
-	*/
-	
 	cout<<endl<<endl<<endl<<"UNDO BOARD: "<<endl<<endl;
-	
-	
 	printBoard();
 }
 
