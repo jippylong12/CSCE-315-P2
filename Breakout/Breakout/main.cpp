@@ -6,6 +6,9 @@
 #include "Server.h"
 #include <stdlib.h>
 #include "Game.h"
+
+#include <string.h>
+
 using namespace std;
 
 
@@ -35,7 +38,7 @@ int main()
     //s.sendMessage("PASSWORD\n");	//Server requests a password
 	cout << "PASSWORD\n";
 	getline(cin,userInputPassword);
-	//userInputPassword = s.getMessage();//Get the password
+	//userInputPassword = s.getMessage(); //Get the password from client
 	accepted = mainGame.parse(userInputPassword);
 
 
@@ -77,7 +80,11 @@ int main()
 			else
 			{
 				cout << "No input given\n";
+
+               //s.sendMessage("No input given.\n");
+
                // s.sendMessage("No input given.\n");
+
 			}
 		}
 
@@ -85,11 +92,15 @@ int main()
         //s.sendMessage("OK\n");  // server sends this to client
 		//Start game
 		mainGame.board.initGamePieces();
-		bool turn = 1; //white piece goes first
+
 
 		while (1)
 		{
+
 			correctInput = 0;
+            bool turn = 0;
+            cout << "Your turn\n";
+            //s.sendMessage("Your turn\n");
 			getline(cin, userInput);
 			//userInput = s.getMessage();
             correctInput = mainGame.parse(userInput);
@@ -97,6 +108,11 @@ int main()
 			{
 				cout << "OK\n";
 				//s.sendMessage("OK\n");
+
+            while(turn == 0 && !mainGame.board.checkIfWin()){
+                
+    
+
                 if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
                                                         //without putting it here
                     
@@ -113,6 +129,7 @@ int main()
                 
                     cout << "row: " << row << " col: " << col << endl;
                     coordinates c(row,col); //piece at postion c to be moved
+
 
                     if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
                     else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
@@ -131,7 +148,23 @@ int main()
 				{
 					mainGame.displayBoard();
                 }
-				turn = !turn; //change turn
+
+			
+                turn = 1;
+				if(mainGame.board.checkIfWin()) exit(2);
+            
+        
+          
+
+         }
+          while(turn == 1 && !mainGame.board.checkIfWin()){
+               //s.sendMessage("Ai's turn\n");
+			   cout << "AI's turn" << endl;
+               mainGame.board.randAI(); //run a random AI
+               //s.sendMessage("AI's turn: done\n");
+			   cout << "AI's turn: done" << endl;
+               turn = 0;
+           }
 			}			
 		}
 	}
@@ -143,8 +176,15 @@ int main()
 		cout << "Wrong Password. \n";
 		main();
 	}
+        return 0;
 
 	
-	return 0;
 }
+
+
+	
+
+
+
+
 

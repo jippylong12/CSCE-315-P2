@@ -1,5 +1,8 @@
 #include <string>
-#include "Coordinates.h"
+#include "coordinates.h"
+
+//#include "Coordinates.h"
+
 using namespace std;
 
 class gamePiece

@@ -16,8 +16,13 @@ class Board
 	vector<gamePiece*> blackPieces;
 	vector<gamePiece*> whitePieces;
     
-    bool isLegalMove;
+
+    bool isLegalMove = 0;   //flag to test legal move
+	bool moveDone = 0;      //another flag for the ai to test if the move executed
+
+
 	
+
 	
 	void initGamePieces();
 	void printBoard();
@@ -34,6 +39,9 @@ class Board
     
     vector <vector <gamePiece> > Pieces;
 	//AI goes here
+
+    void randAI();
+
 	//void moveBlack(coordinates orig, coordinates next);
 	//void moveWhite(coordinates orig, coordinates next);
 	//void removePiece(coordinates a); //just need to set taken to 0 and its position to NULL or -1

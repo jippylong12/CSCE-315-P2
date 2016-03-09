@@ -16,6 +16,9 @@ public:
 	bool MOVE = 0; //know when to move
     
     bool WIN = 0; //Maybe we need this?
+
+    bool TURN = 0;
+
     
     //this will hold the last ten user commands (so the last 20 commands with user and AI)
 	//Once it gets to 20 it will add the newest commands and pop the back two off. The back two because the human will not be able 
