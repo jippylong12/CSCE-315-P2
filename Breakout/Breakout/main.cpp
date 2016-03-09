@@ -109,62 +109,62 @@ int main()
 				cout << "OK\n";
 				//s.sendMessage("OK\n");
 
-            while(turn == 0 && !mainGame.board.checkIfWin()){
+				while(turn == 0 && !mainGame.board.checkIfWin())
+				{
                 
     
 
-                if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
-                                                        //without putting it here
+					if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
+															//without putting it here
                     
-                    int row = stoi(mainGame.gameParser.contain.pieceRow); //convert row string to an int
-                    string colString = mainGame.gameParser.contain.pieceColumn;
-                    string moveDir = mainGame.gameParser.contain.moveDirection; //Grab move direction
+						int row = stoi(mainGame.gameParser.contain.pieceRow); //convert row string to an int
+						string colString = mainGame.gameParser.contain.pieceColumn;
+						string moveDir = mainGame.gameParser.contain.moveDirection; //Grab move direction
                     
-                    cout << "piece col " << mainGame.gameParser.contain.pieceColumn << endl;
+						cout << "piece col " << mainGame.gameParser.contain.pieceColumn << endl;
 					
-					//convert the Column from a to a number in the vector
-					int col;                          //Will be the col number corresponding to A, B, C, etc
-					col = mainGame.convertCol(colString);
+						//convert the Column from a to a number in the vector
+						int col;                          //Will be the col number corresponding to A, B, C, etc
+						col = mainGame.convertCol(colString);
 
                 
-                    cout << "row: " << row << " col: " << col << endl;
-                    coordinates c(row,col); //piece at postion c to be moved
+						cout << "row: " << row << " col: " << col << endl;
+						coordinates c(row,col); //piece at postion c to be moved
 
 
-                    if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
-                    else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
-                    else mainGame.board.moveRIGHT(c);
+						if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
+						else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
+						else mainGame.board.moveRIGHT(c);
                 
                 
-                }
-                if (mainGame.gameParser.contain.UNDO)
-				{
-					cout << "Undoing... \n";
-					//s.sendMessage("Undoing...\n");  //server sends this to client
-                    mainGame.UNDO();
-					mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
-				}
-				if (mainGame.gameParser.contain.DISPLAY)
-				{
-					mainGame.displayBoard();
-                }
-
+					}
+					if (mainGame.gameParser.contain.UNDO)
+					{
+						cout << "Undoing... \n";
+						//s.sendMessage("Undoing...\n");  //server sends this to client
+						mainGame.UNDO();
+						mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
+					}
+					if (mainGame.gameParser.contain.DISPLAY)
+					{
+						mainGame.displayBoard();
+					}
 			
-                turn = 1;
-				if(mainGame.board.checkIfWin()) exit(2);
-            
-        
-          
+					turn = 1;
+					if(mainGame.board.checkIfWin()) exit(2);
+				}
 
-         }
-          while(turn == 1 && !mainGame.board.checkIfWin()){
-               //s.sendMessage("Ai's turn\n");
-			   cout << "AI's turn" << endl;
-               mainGame.board.randAI(); //run a random AI
-               //s.sendMessage("AI's turn: done\n");
-			   cout << "AI's turn: done" << endl;
-               turn = 0;
-           }
+				/*AI TURN*/
+				while(turn == 1 && !mainGame.board.checkIfWin())
+				{
+					//s.sendMessage("Ai's turn\n");
+					cout << "AI's turn" << endl;
+					mainGame.board.randAI(); //run a random AI
+					//s.sendMessage("AI's turn: done\n");
+					cout << "AI's turn: done" << endl;
+					mainGame.displayBoard();
+					turn = 0;
+				}
 			}			
 		}
 	}

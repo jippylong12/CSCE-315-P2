@@ -247,6 +247,7 @@ bool Board::checkIfWin()
          }
         else continue;
     }
+	return false;
 
 }
 
