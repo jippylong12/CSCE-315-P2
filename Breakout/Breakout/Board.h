@@ -21,7 +21,7 @@ class Board
     bool isLegalMove = 0;   //flag to test legal move
 	bool moveDone = 0;      //another flag for the ai to test if the move executed
 
-
+    bool isEnemy(coordinates);
 	
 
 	

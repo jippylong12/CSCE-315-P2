@@ -130,13 +130,25 @@ int main()
                 
 						cout << "row: " << row << " col: " << col << endl;
 						coordinates c(row,col); //piece at postion c to be moved
+                        if(mainGame.board.isEnemy(c)) { cout << "Cannot move enemy piece\n" << endl; continue;}
+                        
+                        bool goodMove = 0;
 
-
-						if (moveDir.compare("FWD") == 0) mainGame.board.moveFWD(c);
-						else if (moveDir.compare("LEFT") == 0) mainGame.board.moveLEFT(c);
-						else mainGame.board.moveRIGHT(c);
-
-						turn = 1;
+						if (moveDir.compare("FWD") == 0)
+                        {
+                            goodMove = mainGame.board.moveFWD(c);
+                            if(goodMove) turn = 1;
+                        }
+						else if (moveDir.compare("LEFT") == 0)
+                        {
+                            goodMove  = mainGame.board.moveLEFT(c);
+                            if(goodMove) turn = 1;
+                        }
+						else
+                        {
+                            goodMove = mainGame.board.moveRIGHT(c);
+                            if(goodMove) turn = 1;
+                        }
                 
                 
 					}
