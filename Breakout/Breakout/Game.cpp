@@ -25,5 +25,7 @@ void Game::UNDO()
 
 void Game::displayBoard()
 {
+
     board.printBoard();
+
 }

@@ -110,7 +110,8 @@ int main()
 //        
 //        mainGame.board.moveRIGHT(c6);
 //        mainGame.board.moveRIGHT(c7);
-        while (1)
+
+		while (1)
 		{
 			correctInput = 0;
 			getline(cin, userInput);
