@@ -85,6 +85,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
     if(board[row][col]==NULL){
         cout << "ILLEGAL MOVE: no gamePiece there" << endl;
         isLegalMove = 0;
+        return 0;
     }
     else
     {
@@ -94,10 +95,12 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             if (board[row+1][col] != NULL && board[row+1][col]->team == 1) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else if (board[row+1][col] != NULL && board[row+1][col]->team == 0) {
                 cout << "Can't move FWD, enemy piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else{
                 board[row+1][col] = board[row][col];    //New piece foward
@@ -105,6 +108,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
                 isLegalMove = 1;  //means the move can happen
                 moveDone = 1;     //movement done
                 checkIfWin();
+                return 1;
             }
         }
         else{                       //white
@@ -112,10 +116,12 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             if (board[row-1][col] != NULL && board[row-1][col]->team == 0) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else if (board[row-1][col] != NULL && board[row-1][col]->team == 1) {
                 cout << "Can't move FWD, enemy piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else{
                 board[row-1][col] = board[row][col];    //New piece foward
@@ -123,11 +129,10 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
                 isLegalMove = 1;  //means the move can happen
                 moveDone = 1;     //set movement done
                 checkIfWin();
+                return 1;
             }
         }
     }
-
-	return 0;
 }
 
 int Board::moveLEFT(coordinates curPos)
@@ -139,6 +144,7 @@ int Board::moveLEFT(coordinates curPos)
     if(board[row][col]==NULL){
         cout << "ILLEGAL MOVE: no gamePiece there" << endl;
         isLegalMove = 0;
+        return 0;
     }
     else{
         if (board[row][col]->team){ //black
@@ -146,10 +152,12 @@ int Board::moveLEFT(coordinates curPos)
             if (board[row+1][col+1] != NULL && board[row+1][col+1]->team == 1) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else if (col == 7) {
                 cout << "Illegal move: moving black left outta bounds" << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else{
                 board[row+1][col+1] = board[row][col];    //New piece relative left
@@ -157,6 +165,7 @@ int Board::moveLEFT(coordinates curPos)
                 isLegalMove = 1;  //means the move can happen
                 moveDone = 1;     //set movement done
                 checkIfWin();
+                return 1;
             }
         }
         else{                       //white
@@ -164,10 +173,13 @@ int Board::moveLEFT(coordinates curPos)
             if (board[row-1][col-1] != NULL && board[row-1][col-1]->team == 0) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else if (col == 0) {    //moving a piece out of bounds
                 cout << "Illegal move: moving white left outta bounds" << endl;
                 isLegalMove = 0;
+                return 0;
+                
             }
             else{
                 board[row-1][col-1] = board[row][col];    //New piece left
@@ -175,6 +187,7 @@ int Board::moveLEFT(coordinates curPos)
                 isLegalMove = 1;  //means the move can happen
                 moveDone = 1;     //set movement done
                 checkIfWin();
+                return 1;
             }
         }
     }
@@ -188,6 +201,7 @@ int Board::moveRIGHT(coordinates curPos)
     if(board[row][col] == NULL){
         cout << "ILLEGAL MOVE: no gamePiece there" << endl;
         isLegalMove = 0;
+        return 0;
     }
     else{
         if (board[row][col]->team){ //black
@@ -195,10 +209,12 @@ int Board::moveRIGHT(coordinates curPos)
              if (col == 0) {
                 cout << "Illegal move: moving black right outta bounds" << endl;
                 isLegalMove = 0;
+                return 0;
             }
 			else if (board[row+1][col-1] != NULL && board[row+1][col-1]->team == 1) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             
             else{
@@ -207,6 +223,7 @@ int Board::moveRIGHT(coordinates curPos)
                 isLegalMove = 1;  //means the move can happen
                 moveDone = 1;     //set movement done
                 checkIfWin();
+                return 1;
             }
         }
         else{                       //white
@@ -214,10 +231,12 @@ int Board::moveRIGHT(coordinates curPos)
             if (board[row-1][col+1] != NULL && board[row-1][col+1]->team == 0) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else if (col == 7) {
                 cout << "Illegal move: moving white right outta bounds" << endl;
                 isLegalMove = 0;
+                return 0;
             }
             else{
                 board[row-1][col+1] = board[row][col];    //New piece right
@@ -225,6 +244,7 @@ int Board::moveRIGHT(coordinates curPos)
                 isLegalMove = 1;  //means the move can happen
                 moveDone = 1;     //set movement done
                 checkIfWin();
+                return 1;
             }
         }
     }
@@ -283,6 +303,14 @@ void Board::randAI(){
 
 }
 
+bool Board::isEnemy(coordinates curPos){
+    int row = curPos.getRow();
+    int col = curPos.getCol();
+    if(board[row][col]->team){
+       return true;
+    }else return false;
+
+}
 
 
 
