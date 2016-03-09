@@ -45,8 +45,23 @@ void Board::initGamePieces()
 		whitePieces[i]->setPosition(1, i - 8);
 		board[1][i - 8] = whitePieces[i];
 	}
+
+/*
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			if (board[i][j] == NULL)
+			{
+				nullPieces.push_back()
+			}
+		}
+	}
+*/
+	
+
     
-    
+    //printBoard();
     
     
     
@@ -90,7 +105,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
     {
         
         if (board[row][col]->team){ //black
-            cout << "Moving piece at pos: " << row << ", " << col << ".  Moving black forward" << endl;
+            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving black forward" << endl;
             if (board[row+1][col] != NULL && board[row+1][col]->team == 1) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
@@ -100,6 +115,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
                 isLegalMove = 0;
             }
             else{
+            	saveState();
                 board[row+1][col] = board[row][col];    //New piece foward
                 board[row][col] = NULL;                     //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -118,6 +134,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
                 isLegalMove = 0;
             }
             else{
+            	saveState();
                 board[row-1][col] = board[row][col];    //New piece foward
                 board[row][col] = NULL;                      //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -126,7 +143,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             }
         }
     }
-
+	//printBoard();
 	return 0;
 }
 
@@ -142,7 +159,7 @@ int Board::moveLEFT(coordinates curPos)
     }
     else{
         if (board[row][col]->team){ //black
-            cout << "Moving piece at pos: " << row << ", " << col << ".  Moving black left" << endl;
+            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving black left" << endl;
             if (board[row+1][col+1] != NULL && board[row+1][col+1]->team == 1) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
@@ -152,6 +169,7 @@ int Board::moveLEFT(coordinates curPos)
                 isLegalMove = 0;
             }
             else{
+            	saveState();
                 board[row+1][col+1] = board[row][col];    //New piece relative left
                 board[row][col] = NULL;                     //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -160,7 +178,7 @@ int Board::moveLEFT(coordinates curPos)
             }
         }
         else{                       //white
-            cout << "Moving piece at pos: " << row << ", " << col << ".  Moving white left" << endl;
+            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving white left" << endl;
             if (board[row-1][col-1] != NULL && board[row-1][col-1]->team == 0) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
@@ -170,6 +188,7 @@ int Board::moveLEFT(coordinates curPos)
                 isLegalMove = 0;
             }
             else{
+            	saveState();
                 board[row-1][col-1] = board[row][col];    //New piece left
                 board[row][col] = NULL;                      //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -178,6 +197,7 @@ int Board::moveLEFT(coordinates curPos)
             }
         }
     }
+	//printBoard();
 	return 0;
 }
 
@@ -191,7 +211,7 @@ int Board::moveRIGHT(coordinates curPos)
     }
     else{
         if (board[row][col]->team){ //black
-            cout << "Moving piece at pos: " << row << ", " << col << ".  Moving black right" << endl;
+            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving black right" << endl;
              if (col == 0) {
                 cout << "Illegal move: moving black right outta bounds" << endl;
                 isLegalMove = 0;
@@ -202,6 +222,7 @@ int Board::moveRIGHT(coordinates curPos)
             }
             
             else{
+            	saveState();
                 board[row+1][col-1] = board[row][col];    //New piece right
                 board[row][col] = NULL;                     //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -210,7 +231,7 @@ int Board::moveRIGHT(coordinates curPos)
             }
         }
         else{                       //white
-            cout << "Moving piece at pos: " << row << ", " << col << ".  Moving white right" << endl;
+            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving white right" << endl;
             if (board[row-1][col+1] != NULL && board[row-1][col+1]->team == 0) {
                 cout << "Can't move: Teammate piece in the way. " << endl;
                 isLegalMove = 0;
@@ -220,6 +241,7 @@ int Board::moveRIGHT(coordinates curPos)
                 isLegalMove = 0;
             }
             else{
+            	saveState();
                 board[row-1][col+1] = board[row][col];    //New piece right
                 board[row][col] = NULL;                      //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -228,7 +250,7 @@ int Board::moveRIGHT(coordinates curPos)
             }
         }
     }
-
+	
 	return 0;
 }
 
@@ -283,8 +305,45 @@ void Board::randAI(){
 
 }
 
+void Board::saveState()
+{
+	if (savedBoard.size() < 10)
+	{
+		cout<<"pushed back the current states"<<endl<<endl;
+		savedBoard.push_back(board);
+	}
+	else
+	{
+		savedBoard.erase(savedBoard.begin());
+		savedBoard.push_back(board);
+	}
+	
+}
 
-
+void Board::undo()
+{
+	
+	board = savedBoard.back();
+	savedBoard.pop_back();
+	
+	/*
+	for (int i = 0; i < blackPieces.size(); ++i)
+	{
+		board[blackPieces[i]->row][blackPieces[i]->column] = blackPieces[i];
+		cout<<"blakcPiece's row: "<<blackPieces[i]->row;
+		cout<<"blakcPiece's column: "<<blackPieces[i]->column;
+	}
+	for (int i = 0; i < whitePieces.size(); ++i)
+	{
+		board[whitePieces[i]->row][whitePieces[i]->column] = whitePieces[i];
+	}
+	*/
+	
+	cout<<endl<<endl<<endl<<"UNDO BOARD: "<<endl<<endl;
+	
+	
+	printBoard();
+}
 
 
 

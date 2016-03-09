@@ -15,7 +15,8 @@ class Board
 	
 	vector<gamePiece*> blackPieces;
 	vector<gamePiece*> whitePieces;
-    
+	
+	vector <vector<vector <gamePiece*> > > savedBoard;
 
     bool isLegalMove = 0;   //flag to test legal move
 	bool moveDone = 0;      //another flag for the ai to test if the move executed
@@ -33,18 +34,12 @@ class Board
 	
     bool checkIfWin();
     
-    
+    void saveState();
+    void undo();		
     
     
     
     vector <vector <gamePiece> > Pieces;
-	//AI goes here
-
     void randAI();
-
-	//void moveBlack(coordinates orig, coordinates next);
-	//void moveWhite(coordinates orig, coordinates next);
-	//void removePiece(coordinates a); //just need to set taken to 0 and its position to NULL or -1
-	void saveState();
 	void undoMove();
 };

@@ -116,7 +116,7 @@ int main()
 
 					if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
 															//without putting it here
-                    
+
 						int row = stoi(mainGame.gameParser.contain.pieceRow); //convert row string to an int
 						string colString = mainGame.gameParser.contain.pieceColumn;
 						string moveDir = mainGame.gameParser.contain.moveDirection; //Grab move direction
@@ -144,8 +144,9 @@ int main()
 					{
 						cout << "Undoing... \n";
 						//s.sendMessage("Undoing...\n");  //server sends this to client
-						mainGame.UNDO();
-						mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
+						mainGame.board.undo();
+						mainGame.board.undo();
+						//mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
 					}
 					if (mainGame.gameParser.contain.DISPLAY)
 					{
