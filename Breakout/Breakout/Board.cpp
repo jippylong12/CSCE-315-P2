@@ -356,9 +356,9 @@ void Board::saveState()
 void Board::undo()
 {
 	
-	board = savedBoard.back();
+	board = savedBoard[savedBoard.size()-1];
 	savedBoard.pop_back();
-	
+	//saveState();
 	cout<<endl<<endl<<endl<<"UNDO BOARD: "<<endl<<endl;
 	printBoard();
 }

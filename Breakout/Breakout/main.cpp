@@ -152,19 +152,21 @@ int main()
                 
                 
 					}
+					
+					if (mainGame.gameParser.contain.DISPLAY)
+					{
+						mainGame.displayBoard();
+					}
+			
 					if (mainGame.gameParser.contain.UNDO)
 					{
 						cout << "Undoing... \n";
 						//s.sendMessage("Undoing...\n");  //server sends this to client
 						mainGame.board.undo();
 						mainGame.board.undo();
+						turn = 0;
 						mainGame.gameParser.contain.UNDO = 0; //so we don't keep going when it's not called
 					}
-					if (mainGame.gameParser.contain.DISPLAY)
-					{
-						mainGame.displayBoard();
-					}
-			
 					
 					if (mainGame.board.checkIfWin())
 					{
@@ -207,6 +209,7 @@ int main()
 							}
 						}
 					}
+					
 				}
 			}			
 		}
