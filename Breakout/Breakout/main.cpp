@@ -172,13 +172,15 @@ int main()
 					{
 						cout << "Play again? (Y/N)\n";
 						getline(cin, userInput);
-						if (userInput == "Y")
+						if (userInput == "Y" || userInput == "y" ||
+							userInput == "yes" || userInput == "Yes")
 						{
 							system("clear");
 							main();
 						}
 						else
 						{
+							cout << "Thanks for playing!\n";
 							exit(2);
 						}
 					}

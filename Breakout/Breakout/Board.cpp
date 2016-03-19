@@ -45,26 +45,16 @@ void Board::initGamePieces()
 		whitePieces[i]->setPosition(1, i - 8);
 		board[1][i - 8] = whitePieces[i];
 	}
+}
 
-/*
-	for (int i = 0; i < 8; ++i)
+
+double Board::evaluationFunction(bool team, int distanceToWin, int takePiece)
+{
+	if (team) //white team
 	{
-		for (int j = 0; j < 8; ++j)
-		{
-			if (board[i][j] == NULL)
-			{
-				nullPieces.push_back()
-			}
-		}
-	}
-*/
-	
 
-    
-    //printBoard();
-    
-    
-    
+	}
+	else //black team
 }
 
 void Board::printBoard()
