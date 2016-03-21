@@ -1,6 +1,6 @@
 #include <vector>
 #include <string>
-#include "gamePiece.h"
+#include "AI.h"
 //#include "coordinates.h"
 
 using namespace std;
@@ -9,12 +9,19 @@ using namespace std;
 
 class Board
 {
+	
 	public:
 	vector <vector <gamePiece*> > board;
-		
 	
+	//AI goes here
+	AI gameAI;
+	
+	vector<double> AIvector;
+	Board() : AIvector(16, 0.0) {} //initalize vector to size of 16 all with 0's;
+
 	vector<gamePiece*> blackPieces;
 	vector<gamePiece*> whitePieces;
+	void runAI(); //updates the AIvector
 	
 	vector <vector<vector <gamePiece*> > > savedBoard;
 
@@ -23,21 +30,8 @@ class Board
 
     bool isEnemy(coordinates);
 	
-
-	
-	void initGamePieces();
+	void initBoard();
 	void printBoard();
-	//AI goes here
-	// the evaluation fucntion is what the AI determines is the best move. It should run the function for every gamePiece and 
-	// then pick the piece that returns the highest number. The inputs and the importance of each of the inputs are determined by us.
-	// For now I have only three inputs: 
-	//		1) Team
-	//		2) Distance away from the other side of the board
-	//		3) Can I take a piece? (0 if no, 1 if one or more piceces are able)
-	//
-	// This is a rought start and so it should change as we go along. 
-	double evaluationFunction(bool, int, int); 
-
 
     int moveFWD(coordinates);
     int moveLEFT(coordinates);
@@ -52,5 +46,4 @@ class Board
     
     vector <vector <gamePiece> > Pieces;
     void randAI();
-	void undoMove();
 };

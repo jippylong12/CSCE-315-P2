@@ -4,9 +4,7 @@
 #include <ctime>
 using namespace std;
 
-
-
-void Board::initGamePieces()
+void Board::initBoard()
 {
 	//fill the vectors with pieces
     for(int i = 0; i < 16; i++)
@@ -47,15 +45,26 @@ void Board::initGamePieces()
 	}
 }
 
-
-double Board::evaluationFunction(bool team, int distanceToWin, int takePiece)
+/*RUNS THE EVALUATION FUNCTION OVER EACH OF AI'S GAME PIECES*/
+void Board::runAI()
 {
-	if (team) //white team
+	double max = 0;
+	int indexToUse = 0;
+	for (int i = 0; i < 16; i++)
 	{
-
+		//PLACES OUTPUT INTO THE AIVECTOR AFTER EACH ITERATION
+		AIvector[i]= gameAI.evaluationFunction(*whitePieces[i]);
+		if (max < AIvector[i]) //
+		{
+			max = AIvector[i];
+			indexToUse = i;
+		}
 	}
-	else //black team
+
+	/*FIND A WAY TO PICK WHICH ROUTE THE GAME PIECE CHOOSES*/
+
 }
+
 
 void Board::printBoard()
 {

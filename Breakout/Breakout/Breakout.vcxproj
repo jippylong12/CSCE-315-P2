@@ -149,6 +149,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gamePiece.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="coordinates.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gamePiece.h" />
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="server.h" />
   </ItemGroup>

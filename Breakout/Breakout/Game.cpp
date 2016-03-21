@@ -21,11 +21,13 @@ int Game::convertCol(string colString)
 void Game::setDifficulty()
 {
 	difficulty = gameParser.contain.difficulty;
+	board.gameAI.setDifficulty(difficulty);
 }
 
 void Game::setGameMode()
 {
 	gameMode = gameParser.contain.gameMode;
+
 }
 
 bool Game::parse(string s)
