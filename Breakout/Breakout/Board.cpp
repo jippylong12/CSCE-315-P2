@@ -53,7 +53,7 @@ void Board::runAI()
 	for (int i = 0; i < 16; i++)
 	{
 		//PLACES OUTPUT INTO THE AIVECTOR AFTER EACH ITERATION
-		AIvector[i]= evaluationFunction(*blackPieces[i]);
+		AIvector[i]= evaluationFunction(blackPieces[i]->row,blackPieces[i]->column);
 		if (max < AIvector[i]) //
 		{
 			max = AIvector[i];
@@ -65,27 +65,39 @@ void Board::runAI()
 
 }
 
-double Board::evaluationFunction(gamePiece Piece)
+double Board::evaluationFunction(int row, int column)
 {
-	return spacesFromWin(Piece) + takePiece(Piece) + canBeTaken(Piece);
+	return spacesFromWin(row, column) + takePiece(row, column) + canBeTaken(row,column);
 }
 
-double Board::spacesFromWin(gamePiece)
+double Board::spacesFromWin(int row, int column)
 {
-	//get the location of the gamePiece
+	if (row == 0) //if we are the end
+	{
+		return 0; //return 0 to end recursion
+	}
+	if (depth == maxDepth)
+	{
+		return 0;
+	}
+	double score = row;
 	//run recursive left
+	
+	double scoreRight = spacesFromWin(row + 1, column - 1) + score;
 	//run recursive forward
+	double scroreFront =  spacesFromWin(row + 1, column);
 	//run recursive right
+	double scoreLeft = spacesFromWin(row + 1, column + 1);
 
 	return 0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }
 
-double Board::takePiece(gamePiece)
+double Board::takePiece(int row, int column)
 {
 	return 0;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }
 
-double Board::canBeTaken(gamePiece)
+double Board::canBeTaken(int row, int column)
 {
 	return 0;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }

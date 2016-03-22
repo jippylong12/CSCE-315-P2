@@ -13,7 +13,8 @@ class Board
 	public:
 	vector <vector <gamePiece*> > board;
 	string difficulty;
-
+	int depth= 0;
+	int maxDepth;
 	/*AI STARTS*/
 	// the evaluation fucntion is what the AI determines is the best move. It should run the function for every gamePiece and 
 	// then pick the piece that returns the highest number. The inputs and the importance of each of the inputs are determined by us.
@@ -23,16 +24,17 @@ class Board
 	//		3) Can I take a piece? (0 if no, 1 if one or more piceces are able)
 	//
 	// This is a rought start and so it should change as we go along. 
-	double evaluationFunction(gamePiece);
+	double evaluationFunction(int,int); //Row, column
 
 	/* RETURNS 1 DIVIDED BY HOW MANY SPACES THE GAME PIECE IS FROM WINNING*/
-	double spacesFromWin(gamePiece);
+	double spacesFromWin(int, int);
 
 	/*RETURNS 10 IF A PIECE CAN BE TAKEN AND 0 IF NONE CAN*/
-	double takePiece(gamePiece);
+	double takePiece(int, int);
 
-	double canBeTaken(gamePiece);
-	
+	/*RETURNS -10 IF OUR CURRENT PIECE CAN BE TAKEN*/
+	double canBeTaken(int, int);
+
 	vector<double> AIvector;
 	Board() : AIvector(16, 0.0) {} //initalize vector to size of 16 all with 0's;
 

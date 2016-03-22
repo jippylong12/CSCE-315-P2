@@ -22,6 +22,22 @@ void Game::setDifficulty()
 {
 	difficulty = gameParser.contain.difficulty;
 	board.difficulty = difficulty;
+	if (difficulty == "EASY")
+	{
+		board.maxDepth = 2;
+	}
+	else if (difficulty == "MEDIUM")
+	{
+		board.maxDepth = 4;
+	}
+	else if (difficulty == "HARD")
+	{
+		board.maxDepth = 6;
+	}
+	else
+	{
+		cout << "Not valid difficulty.\n";
+	}
 }
 
 void Game::setGameMode()
