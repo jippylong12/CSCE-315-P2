@@ -69,7 +69,7 @@ void Board::runAI()
 
 double Board::evaluationFunction(int row, int column)
 {
-	cout << "Here2" << endl;
+
 	return spacesFromWin(row, column) + takePiece(row, column) + canBeTaken(row,column);
 }
 
@@ -85,15 +85,13 @@ double Board::spacesFromWin(int row, int column)
 	}
 	double score = row;
 	//run recursive left
-	cout << "Here3" << endl;
-	cout << "Row: " << row << endl;
-	cout << "Max Depth: " << maxDepth << endl;
+
 	double scoreRight = spacesFromWin(row + 1, column - 1) + score;
 	//run recursive forward
-	cout << "Here4" << endl;
+
 	double scroreFront =  spacesFromWin(row + 1, column);
 	//run recursive right
-	cout << "Here5" << endl;
+
 	double scoreLeft = spacesFromWin(row + 1, column + 1);
 
 	//return 0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
