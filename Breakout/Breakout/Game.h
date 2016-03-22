@@ -27,7 +27,7 @@ public:
 	void setDifficulty();
 	void setGameMode();
 	bool parse(string);
-	void UNDO(); //undo one complete cycle
+	
 	void displayBoard();
 
 };

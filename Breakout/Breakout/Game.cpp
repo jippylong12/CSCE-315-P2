@@ -51,11 +51,6 @@ bool Game::parse(string s)
 	return gameParser.sendNewInput(s);
 }
 
-void Game::UNDO()
-{
-
-}
-
 void Game::displayBoard()
 {
 
