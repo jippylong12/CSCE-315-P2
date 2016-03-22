@@ -53,7 +53,7 @@ void Board::runAI()
 	for (int i = 0; i < 16; i++)
 	{
 		//PLACES OUTPUT INTO THE AIVECTOR AFTER EACH ITERATION
-		AIvector[i]= gameAI.evaluationFunction(*whitePieces[i]);
+		AIvector[i]= evaluationFunction(*blackPieces[i]);
 		if (max < AIvector[i]) //
 		{
 			max = AIvector[i];
@@ -65,6 +65,30 @@ void Board::runAI()
 
 }
 
+double Board::evaluationFunction(gamePiece Piece)
+{
+	return spacesFromWin(Piece) + takePiece(Piece) + canBeTaken(Piece);
+}
+
+double Board::spacesFromWin(gamePiece)
+{
+	//get the location of the gamePiece
+	//run recursive left
+	//run recursive forward
+	//run recursive right
+
+	return 0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+}
+
+double Board::takePiece(gamePiece)
+{
+	return 0;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+}
+
+double Board::canBeTaken(gamePiece)
+{
+	return 0;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+}
 
 void Board::printBoard()
 {

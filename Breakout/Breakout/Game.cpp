@@ -21,7 +21,7 @@ int Game::convertCol(string colString)
 void Game::setDifficulty()
 {
 	difficulty = gameParser.contain.difficulty;
-	board.gameAI.setDifficulty(difficulty);
+	board.difficulty = difficulty;
 }
 
 void Game::setGameMode()
