@@ -2,6 +2,7 @@
 #include "Board.h"
 #include <iostream>
 #include <ctime>
+#include <algorithm>
 using namespace std;
 
 void Board::initBoard()
@@ -179,7 +180,7 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 	// if that direction cannot be run
 	vector<double> moveScores (6,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
 	
-	
+
 
 	if (canLEFT(row, column))
 	{
@@ -237,7 +238,29 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 
 double Board::spacesFromWin(int row, int column)
 {
-	return 0.0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+    depth++;
+    
+    double left = 0, middle = 0, right = 0;
+    
+    if(depth < maxDepth)
+    {
+    	if (canLEFT(row, column))
+    	{
+    		left = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
+    	}
+    	if (canFWD(row, column))
+    	{
+    		middle = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
+    	}
+    	if (canRIGHT(row, column))
+    	{
+    		right = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
+    	}
+    }
+	
+	depth--;
+	
+	return max(left, max(middle, right));
 }
 
 double Board::canTakePiece(int row, int col)
@@ -250,7 +273,7 @@ double Board::canTakePiece(int row, int col)
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
             return 10000;
-		}
+}
     }
     //going left in the POV of the AI gamepiece
     if (row + 1 >= 0 && col + 1 <= 7)
