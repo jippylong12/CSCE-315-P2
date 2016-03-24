@@ -191,7 +191,7 @@ int main()
 						//s.sendMessage("Ai's turn\n");
 						cout << "AI's turn" << endl;
 						mainGame.board.runAI(); //RUN AI EVERY TURN
-						mainGame.board.randAI(); //run a random AI
+						//mainGame.board.randAI(); //run a random AI
 												 //s.sendMessage("AI's turn: done\n");
 						cout << "AI's turn: done" << endl;
 						mainGame.displayBoard();

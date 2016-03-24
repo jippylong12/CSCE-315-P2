@@ -48,53 +48,175 @@ void Board::initBoard()
 /*RUNS THE EVALUATION FUNCTION OVER EACH OF AI'S GAME PIECES*/
 void Board::runAI()
 {
-	double max = 0;
+	double max = -100000000;
 	int indexToUse = 0;
 	for (int i = 0; i < 16; i++)
 	{
 		//PLACES OUTPUT INTO THE AIVECTOR AFTER EACH ITERATION
-		cout << "Here1" << endl;
-		AIvector[i] = evaluationFunction(blackPieces[i]->row,blackPieces[i]->column); //grabs a weight for all of the pieces in their corresponding positions
+		AIScorevector[i] = evaluationFunction(whitePieces[i]->row,whitePieces[i]->column,i); //grabs a weight for all of the pieces in their corresponding positions
 		
-		if (max < AIvector[i]) //
+		if (max < AIScorevector[i]) //
 		{
-			max = AIvector[i];
+			max = AIScorevector[i];
 			indexToUse = i;
 		}
 	}
+	
+	char directionToMove = AIMoveVector[indexToUse];
 
-	/*FIND A WAY TO PICK WHICH ROUTE THE GAME PIECE CHOOSES*/
+	coordinates selctedGamePieceCoordinates(whitePieces[indexToUse]->row, whitePieces[indexToUse]->column);
 
+	switch (directionToMove)
+	{
+		case 'L':
+			moveLEFT(selctedGamePieceCoordinates);
+			break;
+		case 'F':
+			moveFWD(selctedGamePieceCoordinates);
+			break;
+		case 'R':
+			moveRIGHT(selctedGamePieceCoordinates);
+			break;
+		default:
+			cout << "Something went wrong when moving in the AI.\n";
+	}
 }
 
-double Board::evaluationFunction(int row, int column)
-{
 
-	return spacesFromWin(row, column) + takePiece(row, column) + canBeTaken(row,column);
+
+bool Board::canLEFT(int row, int col)
+{
+	if (col == 7) {
+		cout << "Illegal move: moving black left outta bounds" << endl;
+		isLegalMove = 0;
+		return false;
+	}
+	if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 1) {
+		cout << "Can't move: Teammate piece in the way. " << endl;
+		isLegalMove = 0;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool Board::canFWD(int row, int col)
+{
+	if (board[row + 1][col] != NULL && board[row + 1][col]->team == 1) {
+		cout << "Can't move: Teammate piece in the way. " << endl;
+		isLegalMove = 0;
+		return false;
+	}
+	else if (board[row + 1][col] != NULL && board[row + 1][col]->team == 0) {
+		cout << "Can't move FWD, enemy piece in the way. " << endl;
+		isLegalMove = 0;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool Board::canRIGHT(int row, int col)
+{
+	if (col == 0) {
+		cout << "Illegal move: moving black right outta bounds" << endl;
+		isLegalMove = 0;
+		return false;
+	}
+	else if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 1) {
+		cout << "Can't move: Teammate piece in the way. " << endl;
+		isLegalMove = 0;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+//goes through the vector and finds the max and returns the index
+int findMaxScoreIndex(vector<double> scoresVector)
+{
+	//max index is the number to return and currentMax what we will use to check for maximum
+	int maxIndex = -1;
+	double currentMax = -1;
+
+	//for each index in the vector
+	for (int i = 0; i < scoresVector.size(); ++i)
+	{
+		if (currentMax < scoresVector[i]) //if there is a larger number
+		{
+			currentMax = scoresVector[i]; //set the new max
+			maxIndex = i; //get the new location for the max number
+		}
+	}
+
+	if (maxIndex == -1) //there are no possbile moves
+	{
+		cout << "No possible moves.!\n";
+		return -1;
+	}
+	return maxIndex;
+}
+
+double Board::evaluationFunction(int row, int column,int gamePieceIndex)
+{
+	//this vector will hold the scores which are intialized to a very low negative number so it will never get chosen
+	// if that direction cannot be run
+	vector<double> moveScores (3,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
+	
+
+
+	if (canLEFT(row, column))
+	{
+		//moveScores[0] = gamePieceIndex;
+		moveScores[0] = canBeTaken(row - 1, column + 1) + takePiece(row - 1, column + 1) + spacesFromWin(row - 1, column + 1);
+	}
+	if (canFWD(row, column))
+	{
+		//moveScores[1] = gamePieceIndex;
+		moveScores[1] = canBeTaken(row - 1, column) + takePiece(row - 1, column) + spacesFromWin(row - 1, column);
+	}
+	if (canRIGHT(row, column))
+	{
+		//moveScores[2] = gamePieceIndex;
+		moveScores[2] = canBeTaken(row - 1, column - 1) + takePiece(row - 1, column - 1) + spacesFromWin(row - 1, column - 1);
+	}
+
+
+	//find the max index
+	int maxIndex = findMaxScoreIndex(moveScores);
+
+	//depending on what our maxIndex is we will need to push_back the correct characterto indicate which direction is good to go
+	switch (maxIndex) 
+	{
+		case 0: // the 0 index is the left direction
+			AIMoveVector[gamePieceIndex] = 'L'; // so we tell the program to go left if it chooses this gamePiece
+			break;
+		case 1:// the 1 index is forward
+			AIMoveVector[gamePieceIndex] = 'F';// so we tell the program to go forward if it chooses this gamePiece
+			break;
+		case 2:
+			AIMoveVector[gamePieceIndex] = 'R';
+			break;
+		default:
+			return -1000000.0;
+	}
+
+
+	return moveScores[maxIndex];
+
+
+	
 }
 
 double Board::spacesFromWin(int row, int column)
 {
-	if (row == 7) //if we are the end
-	{
-		return 0; //return 0 to end recursion
-	}
-	if (depth == maxDepth)
-	{
-		return 0;
-	}
-	double score = row;
-	//run recursive left
-
-	double scoreRight = spacesFromWin(row + 1, column - 1) + score;
-	//run recursive forward
-
-	double scroreFront =  spacesFromWin(row + 1, column);
-	//run recursive right
-
-	double scoreLeft = spacesFromWin(row + 1, column + 1);
-
-	//return 0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+	return 0.0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }
 
 double Board::takePiece(int row, int column)
@@ -159,6 +281,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             }
             else{
             	saveState();
+				board[row][col]->row += 1;
                 board[row+1][col] = board[row][col];    //New piece foward
                 board[row][col] = NULL;                     //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -181,6 +304,7 @@ int Board::moveFWD(coordinates curPos) //ex:  E7 FWD
             }
             else{
             	saveState();
+				board[row][col]->row -= 1;
                 board[row-1][col] = board[row][col];    //New piece foward
                 board[row][col] = NULL;                      //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -221,6 +345,8 @@ int Board::moveLEFT(coordinates curPos)
             }
             else{
             	saveState();
+				board[row][col]->row += 1;
+				board[row][col]->column += 1;
                 board[row+1][col+1] = board[row][col];    //New piece relative left
                 board[row][col] = NULL;                     //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -244,6 +370,8 @@ int Board::moveLEFT(coordinates curPos)
             }
             else{
             	saveState();
+				board[row][col]->row -= 1;
+				board[row][col]->column -= 1;
                 board[row-1][col-1] = board[row][col];    //New piece left
                 board[row][col] = NULL;                      //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -282,6 +410,8 @@ int Board::moveRIGHT(coordinates curPos)
             
             else{
             	saveState();
+				board[row][col]->row += 1;
+				board[row][col]->column -= 1;
                 board[row+1][col-1] = board[row][col];    //New piece right
                 board[row][col] = NULL;                     //Previous position empty
                 isLegalMove = 1;  //means the move can happen
@@ -304,6 +434,8 @@ int Board::moveRIGHT(coordinates curPos)
             }
             else{
             	saveState();
+				board[row][col]->row -= 1;
+				board[row][col]->column += 1;
                 board[row-1][col+1] = board[row][col];    //New piece right
                 board[row][col] = NULL;                      //Previous position empty
                 isLegalMove = 1;  //means the move can happen

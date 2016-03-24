@@ -24,7 +24,7 @@ class Board
 	//		3) Can I take a piece? (0 if no, 1 if one or more piceces are able)
 	//
 	// This is a rought start and so it should change as we go along. 
-	double evaluationFunction(int,int); //Row, column
+	double evaluationFunction(int,int,int); //Row, column
 
 	/* RETURNS 1 DIVIDED BY HOW MANY SPACES THE GAME PIECE IS FROM WINNING*/
 	double spacesFromWin(int, int);
@@ -35,13 +35,18 @@ class Board
 	/*RETURNS -10 IF OUR CURRENT PIECE CAN BE TAKEN*/
 	double canBeTaken(int, int);
 
-	vector<double> AIvector;
-	Board() : AIvector(16, 0.0) {} //initalize vector to size of 16 all with 0's;
+	bool canLEFT(int,int);
+	bool canFWD(int, int);
+	bool canRIGHT(int, int);
 
+
+	vector<double> AIScorevector;
+	vector<char> AIMoveVector;
+	Board() : AIScorevector(16, -100000.0), AIMoveVector(16, ' ') {} //initalize vector to size of 16 all with 0's;
 
 	/*ACTUAL BOARD*/
-	vector<gamePiece*> blackPieces;
 	vector<gamePiece*> whitePieces;
+	vector<gamePiece*> blackPieces;
 	void runAI(); //updates the AIvector
 	
 	vector <vector<vector <gamePiece*> > > savedBoard;
