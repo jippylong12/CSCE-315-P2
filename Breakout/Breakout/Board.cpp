@@ -91,7 +91,7 @@ bool Board::canLEFT(int row, int col)
 		isLegalMove = 0;
 		return false;
 	}
-	if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0) {
+	if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 1) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
@@ -104,12 +104,12 @@ bool Board::canLEFT(int row, int col)
 
 bool Board::canFWD(int row, int col)
 {
-	if (board[row + 1][col] != NULL && board[row + 1][col]->team == 0) {
+	if (board[row + 1][col] != NULL && board[row + 1][col]->team == 1) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
 	}
-	else if (board[row + 1][col] != NULL && board[row + 1][col]->team == 1) {
+	else if (board[row + 1][col] != NULL && board[row + 1][col]->team == 0) {
 		cout << "Can't move FWD, enemy piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
@@ -127,7 +127,7 @@ bool Board::canRIGHT(int row, int col)
 		isLegalMove = 0;
 		return false;
 	}
-	else if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0) {
+	else if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 1) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
@@ -163,26 +163,39 @@ int findMaxScoreIndex(vector<double> scoresVector)
 	return maxIndex;
 }
 
+double addScores(vector<double> scoresVector)
+{
+	double totalScore = 0;
+	for (int i = 0; i < scoresVector.size(); ++i)
+	{
+		totalScore += scoresVector[i];
+	}
+	return totalScore;
+}
+
 double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 {
 	//this vector will hold the scores which are intialized to a very low negative number so it will never get chosen
 	// if that direction cannot be run
-	vector<double> moveScores (4,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
+	vector<double> moveScores (6,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
 	
-	moveScores[3] = canBeTaken(row, column) + canTakePiece(row, column) + spacesFromWin(row, column);
+	
 
 	if (canLEFT(row, column))
 	{
 		moveScores[0] = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
+		moveScores[3] = canTakePiece(row, column) + spacesFromWin(row, column);
 	}
 	if (canFWD(row, column))
 	{
 		moveScores[1] = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
+		moveScores[4] = spacesFromWin(row, column);
 	}
 	if (canRIGHT(row, column))
 	{
 
 		moveScores[2] = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
+		moveScores[5] = canTakePiece(row, column) + spacesFromWin(row, column);
 	}
 
 
@@ -201,12 +214,22 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 		case 2:
 			AIMoveVector[gamePieceIndex] = 'R';
 			break;
+		case 3: // the 0 index is the left direction
+			AIMoveVector[gamePieceIndex] = 'L'; // so we tell the program to go left if it chooses this gamePiece
+			break;
+		case 4:// the 1 index is forward
+			AIMoveVector[gamePieceIndex] = 'F';// so we tell the program to go forward if it chooses this gamePiece
+			break;
+		case 5:
+			AIMoveVector[gamePieceIndex] = 'R';
+			break;
+
 		default:
 			return -1000000.0;
 	}
 
 
-	return moveScores[maxIndex];
+	return addScores(moveScores);
 
 
 
@@ -227,10 +250,10 @@ double Board::canTakePiece(int row, int col)
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
             return 10000;
-}
+		}
     }
     //going left in the POV of the AI gamepiece
-    else if (row + 1 >= 0 && col + 1 <= 7)
+    if (row + 1 >= 0 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
         {
@@ -250,15 +273,15 @@ double Board::canBeTaken(int row, int col)
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
-            return -6969;
+            return -696969;
         }
     }
     //going left in the POV of the AI gamepiece
-    else if (row + 1 >= 0 && col + 1 <= 7)
+    if (row + 1 >= 0 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
 {
-            return -6969;
+            return -696969;
         }
     }
     
