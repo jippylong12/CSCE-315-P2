@@ -91,7 +91,7 @@ bool Board::canLEFT(int row, int col)
 		isLegalMove = 0;
 		return false;
 	}
-	if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 1) {
+	if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
@@ -104,12 +104,12 @@ bool Board::canLEFT(int row, int col)
 
 bool Board::canFWD(int row, int col)
 {
-	if (board[row + 1][col] != NULL && board[row + 1][col]->team == 1) {
+	if (board[row + 1][col] != NULL && board[row + 1][col]->team == 0) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
 	}
-	else if (board[row + 1][col] != NULL && board[row + 1][col]->team == 0) {
+	else if (board[row + 1][col] != NULL && board[row + 1][col]->team == 1) {
 		cout << "Can't move FWD, enemy piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
@@ -127,7 +127,7 @@ bool Board::canRIGHT(int row, int col)
 		isLegalMove = 0;
 		return false;
 	}
-	else if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 1) {
+	else if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
 		return false;
@@ -167,24 +167,22 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 {
 	//this vector will hold the scores which are intialized to a very low negative number so it will never get chosen
 	// if that direction cannot be run
-	vector<double> moveScores (3,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
+	vector<double> moveScores (4,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
 	
-
+	moveScores[3] = canBeTaken(row, column) + canTakePiece(row, column) + spacesFromWin(row, column);
 
 	if (canLEFT(row, column))
 	{
-		//moveScores[0] = gamePieceIndex;
-		moveScores[0] = canBeTaken(row - 1, column + 1) + canTakePiece(row - 1, column + 1) + spacesFromWin(row - 1, column + 1);
+		moveScores[0] = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
 	}
 	if (canFWD(row, column))
 	{
-		//moveScores[1] = gamePieceIndex;
-		moveScores[1] = canBeTaken(row - 1, column) + canTakePiece(row - 1, column) + spacesFromWin(row - 1, column);
+		moveScores[1] = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
 	}
 	if (canRIGHT(row, column))
 	{
-		//moveScores[2] = gamePieceIndex;
-		moveScores[2] = canBeTaken(row - 1, column - 1) + canTakePiece(row - 1, column - 1) + spacesFromWin(row - 1, column - 1);
+
+		moveScores[2] = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
 	}
 
 
@@ -228,7 +226,7 @@ double Board::canTakePiece(int row, int col)
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
-            return 669;
+            return 10000;
 }
     }
     //going left in the POV of the AI gamepiece
@@ -236,11 +234,11 @@ double Board::canTakePiece(int row, int col)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
         {
-            return 969;
+            return 10000;
         }
     }
 
-	return -100;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+	return 0;
 }
 
 double Board::canBeTaken(int row, int col)
