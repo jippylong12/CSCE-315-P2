@@ -9,8 +9,8 @@ void Board::initBoard()
 	//fill the vectors with pieces
     for(int i = 0; i < 16; i++)
     {
-        blackPieces.push_back(new gamePiece(false));
-        whitePieces.push_back(new gamePiece(true));
+        blackPieces.push_back(new gamePiece(true));
+        whitePieces.push_back(new gamePiece(false));
     }
     
 	board.resize(8);
@@ -24,24 +24,24 @@ void Board::initBoard()
 	//the first eight of each will be on the outer rows
 	for(int i = 0; i < 8; i++)
     {
-		blackPieces[i]->setPosition(7, i); //set position
-		board[7][i] = blackPieces[i]; //push back into board
+		whitePieces[i]->setPosition(7, i); //set position
+		board[7][i] = whitePieces[i]; //push back into board
     }
 	for (int i = 0; i < 8; i++)
 	{
-		whitePieces[i]->setPosition(0, i);
-		board[0][i] = whitePieces[i];
+		blackPieces[i]->setPosition(0, i);
+		board[0][i] = blackPieces[i];
 	}
 	//the second eight will be on the inner rows
 	for (int i = 8; i < 16; i++)
 	{
-		blackPieces[i]->setPosition(6, i - 8);
-		board[6][i-8] = blackPieces[i];
+		whitePieces[i]->setPosition(6, i - 8);
+		board[6][i-8] = whitePieces[i];
 	}
 	for (int i = 8; i < 16; i++)
 	{
-		whitePieces[i]->setPosition(1, i - 8);
-		board[1][i - 8] = whitePieces[i];
+		blackPieces[i]->setPosition(1, i - 8);
+		board[1][i - 8] = blackPieces[i];
 	}
 }
 
@@ -53,7 +53,7 @@ void Board::runAI()
 	for (int i = 0; i < 16; i++)
 	{
 		//PLACES OUTPUT INTO THE AIVECTOR AFTER EACH ITERATION
-		AIScorevector[i] = evaluationFunction(whitePieces[i]->row,whitePieces[i]->column,i); //grabs a weight for all of the pieces in their corresponding positions
+		AIScorevector[i] = evaluationFunction(blackPieces[i]->row,blackPieces[i]->column,i); //grabs a weight for all of the pieces in their corresponding positions
 		
 		if (max < AIScorevector[i]) //
 		{
@@ -64,7 +64,7 @@ void Board::runAI()
 
 	char directionToMove = AIMoveVector[indexToUse];
 
-	coordinates selctedGamePieceCoordinates(whitePieces[indexToUse]->row, whitePieces[indexToUse]->column);
+	coordinates selctedGamePieceCoordinates(blackPieces[indexToUse]->row, blackPieces[indexToUse]->column);
 
 	switch (directionToMove)
 	{
@@ -174,17 +174,17 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 	if (canLEFT(row, column))
 	{
 		//moveScores[0] = gamePieceIndex;
-		moveScores[0] = canBeTaken(row - 1, column + 1) + takePiece(row - 1, column + 1) + spacesFromWin(row - 1, column + 1);
+		moveScores[0] = canBeTaken(row - 1, column + 1) + canTakePiece(row - 1, column + 1) + spacesFromWin(row - 1, column + 1);
 	}
 	if (canFWD(row, column))
 	{
 		//moveScores[1] = gamePieceIndex;
-		moveScores[1] = canBeTaken(row - 1, column) + takePiece(row - 1, column) + spacesFromWin(row - 1, column);
+		moveScores[1] = canBeTaken(row - 1, column) + canTakePiece(row - 1, column) + spacesFromWin(row - 1, column);
 	}
 	if (canRIGHT(row, column))
 	{
 		//moveScores[2] = gamePieceIndex;
-		moveScores[2] = canBeTaken(row - 1, column - 1) + takePiece(row - 1, column - 1) + spacesFromWin(row - 1, column - 1);
+		moveScores[2] = canBeTaken(row - 1, column - 1) + canTakePiece(row - 1, column - 1) + spacesFromWin(row - 1, column - 1);
 	}
 
 
@@ -228,7 +228,7 @@ double Board::canTakePiece(int row, int col)
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
-            return 6969;
+            return 669;
 }
     }
     //going left in the POV of the AI gamepiece
@@ -236,11 +236,11 @@ double Board::canTakePiece(int row, int col)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
         {
-            return 6969;
+            return 969;
         }
     }
 
-	return -1000;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+	return -100;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }
 
 double Board::canBeTaken(int row, int col)
