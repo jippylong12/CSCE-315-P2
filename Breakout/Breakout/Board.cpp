@@ -10,8 +10,10 @@ void Board::initBoard()
 	//fill the vectors with pieces
     for(int i = 0; i < 16; i++)
     {
-        blackPieces.push_back(new gamePiece(true));
-        whitePieces.push_back(new gamePiece(false));
+        blackPieces.push_back(new gamePiece(true)); //create a blackPiece because BLACK IS 1
+		blackPieces[i]->taken = 0; //set alive
+        whitePieces.push_back(new gamePiece(false));// createa  whitePiece BECAUSE WHITE IS 0
+		whitePieces[i]->taken = 0; //set alive
     }
     
 	board.resize(8);
@@ -54,12 +56,31 @@ void Board::runAI()
 	for (int i = 0; i < 16; i++)
 	{
 		//PLACES OUTPUT INTO THE AIVECTOR AFTER EACH ITERATION
-		AIScorevector[i] = evaluationFunction(blackPieces[i]->row,blackPieces[i]->column,i); //grabs a weight for all of the pieces in their corresponding positions
+		if (!blackPieces[i]->taken) //if alive run theAI
+		{
+			AIScorevector[i] = evaluationFunction(blackPieces[i]->row, blackPieces[i]->column, i); //grabs a weight for all of the pieces in their corresponding positions
+		}
+		else //the piece is dead so we should make sure never to use it
+		{
+			AIScorevector[i] = -1000000;
+		}
 		
-		if (max < AIScorevector[i]) //
+		if (max < AIScorevector[i]) //finding max
 		{
 			max = AIScorevector[i];
 			indexToUse = i;
+		}
+		if (max == AIScorevector[i]) //if we find an equal one we randomly pick one
+		{
+			int a = rand() % 2; //randomly pick 0 or 1
+			if (a)
+			{
+				indexToUse = indexToUse;
+			}
+			else
+			{
+				indexToUse = i;
+			}
 		}
 	}
 
@@ -105,6 +126,7 @@ bool Board::canLEFT(int row, int col)
 
 bool Board::canFWD(int row, int col)
 {
+
 	if (board[row + 1][col] != NULL && board[row + 1][col]->team == 1) {
 		cout << "Can't move: Teammate piece in the way. " << endl;
 		isLegalMove = 0;
@@ -154,6 +176,18 @@ int findMaxScoreIndex(vector<double> scoresVector)
 			currentMax = scoresVector[i]; //set the new max
 			maxIndex = i; //get the new location for the max number
 		}
+		if (currentMax == scoresVector[i]) //if we find an equal one we randomly pick one
+		{
+			int a = rand() % 2; //randomly pick 0 or 1
+			if (a)
+			{
+				maxIndex = maxIndex;
+			}
+			else
+			{
+				maxIndex = i;
+			}
+		}
 	}
 
 	if (maxIndex == -1) //there are no possbile moves
@@ -184,19 +218,19 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 
 	if (canLEFT(row, column))
 	{
-		moveScores[0] = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
-		moveScores[3] = canTakePiece(row, column) + spacesFromWin(row, column);
+		moveScores[0] = canBeTaken(row + 1, column + 1, 'L') + canTakePiece(row + 1, column + 1, 'L') + spacesFromWin(row + 1, column + 1);
+		moveScores[3] = canTakePiece(row, column, 'L') + spacesFromWin(row, column);
 	}
 	if (canFWD(row, column))
 	{
-		moveScores[1] = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
+		moveScores[1] = canBeTaken(row + 1, column, 'M') + canTakePiece(row + 1, column, 'M') + spacesFromWin(row + 1, column);
 		moveScores[4] = spacesFromWin(row, column);
 	}
 	if (canRIGHT(row, column))
 	{
 
-		moveScores[2] = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
-		moveScores[5] = canTakePiece(row, column) + spacesFromWin(row, column);
+		moveScores[2] = canBeTaken(row + 1, column - 1, 'R') + canTakePiece(row + 1, column - 1, 'R') + spacesFromWin(row + 1, column - 1);
+		moveScores[5] = canTakePiece(row, column, 'R') + spacesFromWin(row, column);
 	}
 
 
@@ -246,52 +280,73 @@ double Board::spacesFromWin(int row, int column)
     {
     	if (canLEFT(row, column))
     	{
-    		left = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
+			if (row == 7)
+			{
+				left = 20000;
+			}
+			else
+			{
+				left = depth*10.0;
+			}
     	}
     	if (canFWD(row, column))
     	{
-    		middle = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
+			if (row == 7)
+			{
+				middle = 20000;
+			}
+			else
+			{
+				middle = depth * 10.0;
+			}
     	}
     	if (canRIGHT(row, column))
     	{
-    		right = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
+			if (row == 7)
+			{
+				right = 20000;
+			}
+			else
+			{
+				right = depth * 10.0;
+			}
     	}
     }
 	
 	depth--;
 	
-	return max(left, max(middle, right));
+	return left + middle + right;
 }
 
-double Board::canTakePiece(int row, int col)
+double Board::canTakePiece(int row, int col, char direction)
 {
     
      //going right in the POV of the AI gamepiece
-    if (row + 1 <= 7 && col - 1 >= 0)
+    if (direction == 'R' && row + 1 <= 7 && col - 1 >= 0)
     {
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
-            return 10000;
+            return 100000;
 }
     }
     //going left in the POV of the AI gamepiece
-    if (row + 1 >= 0 && col + 1 <= 7)
+    if (direction == 'L' && row + 1 >= 0 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
         {
-            return 10000;
+            return 100000;
         }
     }
 
 	return 0;
 }
 
-double Board::canBeTaken(int row, int col)
+double Board::canBeTaken(int row, int col, char direction)
 {
     
     //going right in the POV of the AI gamepiece
-    if (row + 1 <= 7 && col - 1 >= 0)
+    if (direction == 'R' && row + 1 <= 7 && col - 1 >= 0)
     {
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
@@ -300,7 +355,7 @@ double Board::canBeTaken(int row, int col)
         }
     }
     //going left in the POV of the AI gamepiece
-    if (row + 1 >= 0 && col + 1 <= 7)
+    if (direction ==  'L' && row + 1 >= 0 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
 {

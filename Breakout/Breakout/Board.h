@@ -30,10 +30,10 @@ class Board
 	double spacesFromWin(int, int);
 
 	/*RETURNS 10 IF A PIECE CAN BE TAKEN AND 0 IF NONE CAN*/
-	double canTakePiece(int, int);
+	double canTakePiece(int, int, char);
 
 	/*RETURNS -10 IF OUR CURRENT PIECE CAN BE TAKEN*/
-	double canBeTaken(int, int);
+	double canBeTaken(int, int, char);
 
 	bool canLEFT(int,int);
 	bool canFWD(int, int);
