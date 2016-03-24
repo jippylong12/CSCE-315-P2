@@ -61,7 +61,7 @@ void Board::runAI()
 			indexToUse = i;
 		}
 	}
-	
+
 	char directionToMove = AIMoveVector[indexToUse];
 
 	coordinates selctedGamePieceCoordinates(whitePieces[indexToUse]->row, whitePieces[indexToUse]->column);
@@ -147,7 +147,7 @@ int findMaxScoreIndex(vector<double> scoresVector)
 
 	//for each index in the vector
 	for (int i = 0; i < scoresVector.size(); ++i)
-	{
+{
 		if (currentMax < scoresVector[i]) //if there is a larger number
 		{
 			currentMax = scoresVector[i]; //set the new max
@@ -159,7 +159,7 @@ int findMaxScoreIndex(vector<double> scoresVector)
 	{
 		cout << "No possible moves.!\n";
 		return -1;
-	}
+}
 	return maxIndex;
 }
 
@@ -211,7 +211,7 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 	return moveScores[maxIndex];
 
 
-	
+
 }
 
 double Board::spacesFromWin(int row, int column)
@@ -219,14 +219,53 @@ double Board::spacesFromWin(int row, int column)
 	return 0.0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }
 
-double Board::takePiece(int row, int column)
+double Board::canTakePiece(int row, int col)
 {
-	return 0;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+    
+     //going right in the POV of the AI gamepiece
+    if (row + 1 <= 7 && col - 1 >= 0)
+    {
+        //Make sure there's no piece at the place.
+        if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
+        {
+            return 6969;
+}
+    }
+    //going left in the POV of the AI gamepiece
+    else if (row + 1 >= 0 && col + 1 <= 7)
+    {
+        if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
+        {
+            return 6969;
+        }
+    }
+
+	return -1000;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
 }
 
-double Board::canBeTaken(int row, int column)
+double Board::canBeTaken(int row, int col)
 {
-	return 0;/*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+    
+    //going right in the POV of the AI gamepiece
+    if (row + 1 <= 7 && col - 1 >= 0)
+    {
+        //Make sure there's no piece at the place.
+        if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
+        {
+            return -6969;
+        }
+    }
+    //going left in the POV of the AI gamepiece
+    else if (row + 1 >= 0 && col + 1 <= 7)
+    {
+        if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
+{
+            return -6969;
+        }
+    }
+    
+    //Can't be taken
+    return 1000;
 }
 
 void Board::printBoard()
@@ -356,18 +395,21 @@ int Board::moveLEFT(coordinates curPos)
             }
         }
         else{                       //white
-            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving white left" << endl;
-            if (board[row-1][col-1] != NULL && board[row-1][col-1]->team == 0) {
-                cout << "Can't move: Teammate piece in the way. " << endl;
-                isLegalMove = 0;
-                return 0;
-            }
-            else if (col == 0) {    //moving a piece out of bounds
+             if (col == 0) {    //moving a piece out of bounds
                 cout << "Illegal move: moving white left outta bounds" << endl;
                 isLegalMove = 0;
                 return 0;
                 
             }
+        
+        
+            //cout << "Moving piece at pos: " << row << ", " << col << ".  Moving white left" << endl;
+            else if (board[row-1][col-1] != NULL && board[row-1][col-1]->team == 0) {
+                cout << "Can't move: Teammate piece in the way. " << endl;
+                isLegalMove = 0;
+                return 0;
+            }
+                
             else{
             	saveState();
 				board[row][col]->row -= 1;
@@ -511,7 +553,7 @@ bool Board::isEnemy(coordinates curPos){
 }
 void Board::saveState()
 {
-	if (savedBoard.size() < 20)
+	if (savedBoard.size() < 21)
 	{
 		cout<<"pushed back the current states"<<endl<<endl;
 		savedBoard.push_back(board);
@@ -527,12 +569,19 @@ void Board::saveState()
 
 void Board::undo()
 {
-	
+	if (savedBoard.size() == 0)
+	{
+	    cout <<endl<< "Can't undo anymore."<<endl;
+	}
+	else
+	{
 	board = savedBoard[savedBoard.size()-1];
 	savedBoard.pop_back();
 	//saveState();
 	cout<<endl<<endl<<endl<<"UNDO BOARD: "<<endl<<endl;
 	printBoard();
+}
+
 }
 
 
