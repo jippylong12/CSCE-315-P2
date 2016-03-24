@@ -2,6 +2,7 @@
 #include "Board.h"
 #include <iostream>
 #include <ctime>
+#include <algorithm>
 using namespace std;
 
 void Board::initBoard()
@@ -174,17 +175,17 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 	if (canLEFT(row, column))
 	{
 		//moveScores[0] = gamePieceIndex;
-		moveScores[0] = canBeTaken(row - 1, column + 1) + canTakePiece(row - 1, column + 1) + spacesFromWin(row - 1, column + 1);
+		moveScores[0] = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
 	}
 	if (canFWD(row, column))
 	{
 		//moveScores[1] = gamePieceIndex;
-		moveScores[1] = canBeTaken(row - 1, column) + canTakePiece(row - 1, column) + spacesFromWin(row - 1, column);
+		moveScores[1] = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
 	}
 	if (canRIGHT(row, column))
 	{
 		//moveScores[2] = gamePieceIndex;
-		moveScores[2] = canBeTaken(row - 1, column - 1) + canTakePiece(row - 1, column - 1) + spacesFromWin(row - 1, column - 1);
+		moveScores[2] = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
 	}
 
 
@@ -216,7 +217,29 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 
 double Board::spacesFromWin(int row, int column)
 {
-	return 0.0; /*TEMP CHANGE WHEN YOU DO THE FUNCTION*/
+    depth++;
+    
+    double left = 0, middle = 0, right = 0;
+    
+    if(depth < maxDepth)
+    {
+    	if (canLEFT(row, column))
+    	{
+    		left = canBeTaken(row + 1, column + 1) + canTakePiece(row + 1, column + 1) + spacesFromWin(row + 1, column + 1);
+    	}
+    	if (canFWD(row, column))
+    	{
+    		middle = canBeTaken(row + 1, column) + canTakePiece(row + 1, column) + spacesFromWin(row + 1, column);
+    	}
+    	if (canRIGHT(row, column))
+    	{
+    		right = canBeTaken(row + 1, column - 1) + canTakePiece(row + 1, column - 1) + spacesFromWin(row + 1, column - 1);
+    	}
+    }
+	
+	depth--;
+	
+	return max(left, max(middle, right));
 }
 
 double Board::canTakePiece(int row, int col)
