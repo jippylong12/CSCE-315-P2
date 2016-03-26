@@ -39,9 +39,8 @@ int main()
 	cout << "PASSWORD\n";
 	getline(cin,userInputPassword);
 	//userInputPassword = s.getMessage(); //Get the password from client
-	accepted = mainGame.parse(userInputPassword);
-
-
+	mainGame.parse(userInputPassword);
+	accepted = (mainGame.getPassword() == mainGame.gameParser.contain.password);
 
 	if (accepted)
 	{
