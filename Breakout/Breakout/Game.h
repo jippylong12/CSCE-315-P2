@@ -24,6 +24,7 @@ public:
 	string getGameMode() { return gameMode; }
 	int convertCol(string);
 
+	bool gameMove(bool); //moves user piece if we've recieved a move command
 	void setDifficulty();
 	void setGameMode();
 	bool parse(string);
