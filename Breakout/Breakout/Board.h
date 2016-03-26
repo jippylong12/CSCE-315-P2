@@ -27,7 +27,7 @@ class Board
 	double evaluationFunction(int,int,int); //Row, column
 
 	/* RETURNS 1 DIVIDED BY HOW MANY SPACES THE GAME PIECE IS FROM WINNING*/
-	double spacesFromWin(int, int);
+	double spacesFromWin(int, int,int,int);
 
 	/*RETURNS 10 IF A PIECE CAN BE TAKEN AND 0 IF NONE CAN*/
 	double canTakePiece(int, int, char);

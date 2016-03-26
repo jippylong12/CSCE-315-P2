@@ -220,19 +220,19 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 
 	if (canLEFT(row, column))
 	{
-		moveScores[0] = canBeTaken(row + 1, column + 1, 'L') + canTakePiece(row + 1, column + 1, 'L') + spacesFromWin(row + 1, column + 1);
-		moveScores[3] = canTakePiece(row, column, 'L') + spacesFromWin(row, column);
+		moveScores[0] = canBeTaken(row + 1, column + 1, 'L') + canTakePiece(row + 1, column + 1, 'L') + spacesFromWin(row + 1, column + 1, row + maxDepth, row);
+		moveScores[3] = canTakePiece(row, column, 'L') + spacesFromWin(row, column, row + maxDepth,row);
 	}
 	if (canFWD(row, column))
 	{
-		moveScores[1] = canBeTaken(row + 1, column, 'M') + canTakePiece(row + 1, column, 'M') + spacesFromWin(row + 1, column);
-		moveScores[4] = spacesFromWin(row, column);
+		moveScores[1] = canBeTaken(row + 1, column, 'M') + canTakePiece(row + 1, column, 'M') + spacesFromWin(row + 1, column, row + maxDepth, row);
+		moveScores[4] = spacesFromWin(row, column, row + maxDepth, row);
 	}
 	if (canRIGHT(row, column))
 	{
 
-		moveScores[2] = canBeTaken(row + 1, column - 1, 'R') + canTakePiece(row + 1, column - 1, 'R') + spacesFromWin(row + 1, column - 1);
-		moveScores[5] = canTakePiece(row, column, 'R') + spacesFromWin(row, column);
+		moveScores[2] = canBeTaken(row + 1, column - 1, 'R') + canTakePiece(row + 1, column - 1, 'R') + spacesFromWin(row + 1, column - 1, row + maxDepth, row);
+		moveScores[5] = canTakePiece(row, column, 'R') + spacesFromWin(row, column, row + maxDepth, row);
 	}
 
 
@@ -272,72 +272,66 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 
 }
 
-double Board::spacesFromWin(int row, int column)
+double Board::spacesFromWin(int row, int column, int maxDepth, int startRow)
 {
-    depth++;
-    
-    double left = 0, middle = 0, right = 0;
-    
-    if(depth < maxDepth)
-    {
-    	if (canLEFT(row, column))
-    	{
-			if (row == 7)
-			{
-				left = 20000;
-			}
-			else
-			{
-				left = depth*10.0;
-			}
-    	}
-    	if (canFWD(row, column))
-    	{
-			if (row == 7)
-			{
-				middle = 20000;
-			}
-			else
-			{
-				middle = depth * 10.0;
-			}
-    	}
-    	if (canRIGHT(row, column))
-    	{
-			if (row == 7)
-			{
-				right = 20000;
-			}
-			else
-			{
-				right = depth * 10.0;
-			}
-    	}
-    }
-	
-	depth--;
-	
-	return left + middle + right;
+	double leftScore = 0;
+	double fwdScore = 0;
+	double rightScore = 0;
+
+	if (maxDepth > 7) //so we don't go outside the board
+	{
+		maxDepth = 7;
+	}
+	if (row == 7) //if we can win
+	{
+		return 100000.0;
+	}
+	//maxDepth is the farthest row we should check. 
+	if (row == maxDepth) //if row is at the farthest row we can check then return
+	{
+		return row*5000.0;
+	}
+	//go left right and middle
+	if (canLEFT(row, column))
+	{
+		//the idea is the farther away you get from the current position then the 
+		//end result should have less meaning. EX. We have a piece at row 6 and a piece
+		//at row 2. Row 6 can win but only needs to go through one level while row 2 can 
+		//also win but that's 5 turns away so we need to account for that. 
+		leftScore = leftScore + (1/((row-startRow+1)*10.0))*spacesFromWin(row + 1, column + 1, maxDepth,startRow);
+	}
+	if (canFWD(row, column))
+	{
+		fwdScore = fwdScore + (1 / ((row - startRow + 1)* 100.0))*spacesFromWin(row + 1, column, maxDepth, startRow);
+	}
+	if (canRIGHT(row, column))
+	{
+		rightScore = rightScore+ (1 / ((row - startRow + 1)* 100.0))*spacesFromWin(row + 1, column - 1 , maxDepth, startRow);
+	}
+
+	return max(leftScore, max(fwdScore, rightScore));
+	//the closer you get to the goal increase points
+
 }
 
 double Board::canTakePiece(int row, int col, char direction)
 {
     
      //going right in the POV of the AI gamepiece
-    if (direction == 'R' && row + 1 <= 7 && col - 1 >= 0)
+    if (direction == 'R' && row + 1 >= 0 && row + 1 < 7 && col - 1 >= 0)
     {
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
-            return 100000;
+            return 100000.0;
 }
     }
     //going left in the POV of the AI gamepiece
-    if (direction == 'L' && row + 1 >= 0 && col + 1 <= 7)
+    if (direction == 'L' && row + 1 >= 0 && row + 1 < 7 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
         {
-            return 100000;
+            return 100000.0;
         }
     }
 
@@ -348,25 +342,25 @@ double Board::canBeTaken(int row, int col, char direction)
 {
     
     //going right in the POV of the AI gamepiece
-    if (direction == 'R' && row + 1 <= 7 && col - 1 >= 0)
+    if (direction == 'R' && row + 1 >= 0 && row + 1 < 7 && col - 1 >= 0)
     {
         //Make sure there's no piece at the place.
         if (board[row + 1][col - 1] != NULL && board[row + 1][col - 1]->team == 0)
         {
-            return -696969;
+            return -99999.0;
         }
     }
     //going left in the POV of the AI gamepiece
-    if (direction ==  'L' && row + 1 >= 0 && col + 1 <= 7)
+    if (direction ==  'L' && row + 1 >= 0 && row + 1 < 7 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
 {
-            return -696969;
+            return -99999.0;
         }
     }
     
     //Can't be taken
-    return 1000;
+    return 1000.0;
 }
 
 void Board::printBoard()
