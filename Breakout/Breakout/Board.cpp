@@ -225,7 +225,7 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 	}
 	if (canFWD(row, column))
 	{
-		moveScores[1] = canBeTaken(row + 1, column, 'M') + canTakePiece(row + 1, column, 'M') + spacesFromWin(row + 1, column, row + maxDepth, row);
+		moveScores[1] = canBeTaken(row + 1, column, 'F') + canTakePiece(row + 1, column, 'F') + spacesFromWin(row + 1, column, row + maxDepth, row);
 		moveScores[4] = spacesFromWin(row, column, row + maxDepth, row);
 	}
 	if (canRIGHT(row, column))
@@ -354,10 +354,17 @@ double Board::canBeTaken(int row, int col, char direction)
     if (direction ==  'L' && row + 1 >= 0 && row + 1 < 7 && col + 1 <= 7)
     {
         if (board[row + 1][col + 1] != NULL && board[row + 1][col + 1]->team == 0)
-{
+		{
             return -99999.0;
         }
     }
+	if (direction == 'F' && row + 1 >= 0 && row + 1 < 7 && col <= 7 && col -1 >= 0 && col + 1 <= 7)
+	{
+		if ((board[row+1][col+1] != NULL && board[row + 1][col + 1]->team == 0) || (board[row + 1][col - 1] && board[row + 1][col - 1]->team == 0))
+		{
+			return -99999.0;
+		}
+	}
     
     //Can't be taken
     return 1000.0;
