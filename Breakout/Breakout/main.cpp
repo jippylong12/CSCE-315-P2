@@ -110,10 +110,7 @@ int main()
 
 				if(turn == 0 && !mainGame.board.checkIfWin())
 				{
-                
-    
-
-					if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
+                	if (mainGame.gameParser.contain.MOVE){  //Had this in the parser but I couldn't figure out how to update mainGame
 															//without putting it here
 						bool goodMove = mainGame.gameMove(turn); 
 						if (!goodMove) { continue; } //if not a good move keep going until we get one
@@ -137,19 +134,9 @@ int main()
 					
 					if (mainGame.board.checkIfWin())
 					{
-						cout << "Play again? (Y/N)\n";
-						getline(cin, userInput);
-						if (userInput == "Y" || userInput == "y" ||
-							userInput == "yes" || userInput == "Yes")
-						{
-							system("clear");
-							main();
-						}
-						else
-						{
-							cout << "Thanks for playing!\n";
-							exit(2);
-						}
+						bool playAgain = mainGame.playAgain(); 
+						if (playAgain) { main(); } //if they want to play again start the game over
+						//there is no else because the game will exit in that function 
 					}
 
 					/*AI TURN*/
@@ -158,25 +145,15 @@ int main()
 						//s.sendMessage("Ai's turn\n");
 						cout << "AI's turn" << endl;
 						mainGame.board.runAI(); //RUN AI EVERY TURN
-						//mainGame.board.randAI(); //run a random AI
-												 //s.sendMessage("AI's turn: done\n");
+						//s.sendMessage("AI's turn: done\n");
 						cout << "AI's turn: done" << endl;
 						mainGame.displayBoard();
 						turn = 0;
 
 						if (mainGame.board.checkIfWin())
 						{
-							cout << "Play again? (Y/N)\n";
-							getline(cin, userInput);
-							if (userInput == "Y" || "y")
-							{
-								system("clear");
-								main();
-							}
-							else
-							{
-								exit(2);
-							}
+							bool playAgain0 = mainGame.playAgain();
+							if (playAgain0) { main(); }
 						}
 					}
 					

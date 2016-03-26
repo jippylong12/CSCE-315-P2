@@ -151,7 +151,7 @@ bool Parser::isPassword()
 }
 bool Parser::isCommand()
 {
-	if (UPPERCASE_STRING(tokens.front()).compare("DISPLAY") == 0)
+	if (UPPERCASE_STRING(tokens.front()).compare("DISPLAY") == 0 || UPPERCASE_STRING(tokens.front()) == "LS")
 	{
 		contain.DISPLAY = !contain.DISPLAY; //flip the dispaly signal
 		cout << "Display set to: " << contain.DISPLAY << endl;

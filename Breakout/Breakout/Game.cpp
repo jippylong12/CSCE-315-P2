@@ -94,3 +94,21 @@ bool Game::gameMove(bool turn)
 		if (goodMove) return true;
 	}
 }
+
+bool Game::playAgain()
+{
+	string userInput;
+	cout << "Play again? (Y/N)\n";
+	getline(cin, userInput);
+	if (userInput == "Y" || userInput == "y" ||
+		userInput == "yes" || userInput == "Yes")
+	{
+		system("clear");
+		return true;
+	}
+	else
+	{
+		cout << "Thanks for playing!\n";
+		exit(2);
+	}
+}

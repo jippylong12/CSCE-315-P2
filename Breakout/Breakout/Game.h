@@ -25,6 +25,7 @@ public:
 	int convertCol(string);
 
 	bool gameMove(bool); //moves user piece if we've recieved a move command
+	bool playAgain(); //checks if user wants to play again
 	void setDifficulty();
 	void setGameMode();
 	bool parse(string);
