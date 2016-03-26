@@ -82,16 +82,19 @@ bool Game::gameMove(bool turn)
 	{
 		goodMove = board.moveFWD(c);
 		if (goodMove) return true;
+		else return false;
 	}
 	else if (moveDir.compare("LEFT") == 0)
 	{
 		goodMove = board.moveLEFT(c);
 		if (goodMove) return true;
+		else return false;
 	}
 	else
 	{
 		goodMove = board.moveRIGHT(c);
 		if (goodMove) return true;
+		else return false;
 	}
 }
 

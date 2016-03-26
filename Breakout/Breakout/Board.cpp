@@ -203,6 +203,7 @@ double addScores(vector<double> scoresVector)
 	double totalScore = 0;
 	for (int i = 0; i < scoresVector.size(); ++i)
 	{
+		if(!(scoresVector[i] == -100000)) //ignore the moves we can't do. 
 		totalScore += scoresVector[i];
 	}
 	return totalScore;
@@ -212,7 +213,8 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 {
 	//this vector will hold the scores which are intialized to a very low negative number so it will never get chosen
 	// if that direction cannot be run
-	vector<double> moveScores (6,-1000000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
+
+	vector<double> moveScores (6,-100000.0); /*LEFT IS INDEX 0, MIDDLE IS INDEX 1, RIGHT IS INDEX 2*/
 	
 
 
@@ -260,7 +262,7 @@ double Board::evaluationFunction(int row, int column,int gamePieceIndex)
 			break;
 
 		default:
-			return -1000000.0;
+			return -100000.0;
 	}
 
 
